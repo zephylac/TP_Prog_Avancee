@@ -10,9 +10,6 @@
 
 typedef struct string_s 
 {
- /* void (*afficher)(struct string_s * elem);
-  err_t (*detruire)(struct string_s ** elem);
-  */
   #include <attributs_objet.h>
   char * string ;
 } string_t ;

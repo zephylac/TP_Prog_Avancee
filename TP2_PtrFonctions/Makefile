@@ -16,12 +16,6 @@ fich_obj_test_personne=test_personne.o personne.o individu.o
 
 BIN = test_individu test_fraction test_mystring test_liste test_liste_objet test_personne 
 
-test_personne : $(fich_obj_test_personne)
-	$(CCLNK) $(CFLAGS) $(LIBMATH) $(fich_obj_test_personne) -o test_personne 
-
-test_personne.o : test_personne.c
-	$(CCOBJ) $(CFLAGS) $(LIBMATH) test_personne.c -o test_personne.o -I./ 
-
 test_individu : $(fich_obj_test_individu) 
 	$(CCLNK) $(CFLAGS) $(LIBMATH) $(fich_obj_test_individu) -o test_individu 
 
@@ -52,6 +46,11 @@ test_liste_objet : $(fich_obj_test_liste_objet)
 test_liste_objet.o : test_liste_objet.c 
 	$(CCOBJ) $(CFLAGS) $(LIBMATH) test_liste_objet.c -o test_liste_objet.o -I./ 
 
+test_personne : $(fich_obj_test_personne)
+	$(CCLNK) $(CFLAGS) $(LIBMATH) $(fich_obj_test_personne) -o test_personne 
+
+test_personne.o : test_personne.c
+	$(CCOBJ) $(CFLAGS) $(LIBMATH) test_personne.c -o test_personne.o -I./ 
 
 #
 # Modules

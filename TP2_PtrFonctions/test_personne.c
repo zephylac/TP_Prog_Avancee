@@ -16,7 +16,7 @@ main()
   personne = personne_creer("Rogers", "Water", "7 rue de l'info","Le mans");
   
   printf( "Test affichage personne\n" ) ;  
-  personne -> afficher((objet_t*)personne);
+/*  personne -> afficher((objet_t*)personne);*/
   printf( "\n");
 
   printf( "Test d'existence sur une personne_t existant\n" ) ;

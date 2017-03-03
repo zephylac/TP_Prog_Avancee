@@ -2,7 +2,6 @@
 #define _PERSONNE_H_
 
 #include <objet.h>
-#include <individu.h>
 
 /*
  * DEFINITION OBJET "INDIVIDU"  

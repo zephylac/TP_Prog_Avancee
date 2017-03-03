@@ -16,14 +16,14 @@ main()
   chaine = string_creer( "azertyuiop" ) ;
 
   printf( "Test affichage chaine\n" ) ;
-  string_afficher(chaine); 
+  chaine -> afficher((objet_t*)chaine); 
   printf( "\n");
 
   printf( "Test d'existance sur un string_t existant\n" ) ;
   ( string_existe(chaine) ? printf("-->OK\n") : printf ("-->KO\n") )  ;
   
   printf( "Test destruction chaine\n" ) ;
-  string_detruire(&chaine);
+  chaine -> detruire((objet_t**)&chaine);
   ( string_existe(chaine) ? printf("-->KO\n") : printf ("-->OK\n") )  ;
 
 

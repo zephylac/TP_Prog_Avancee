@@ -16,14 +16,14 @@ main()
   fraction = fraction_creer( 5 , 7 ) ;
 
   printf( "Test affichage fraction\n" ) ;
-  fraction_afficher(fraction);
+  fraction -> afficher((objet_t*)fraction);
   printf( "\n");
 
   printf( "Test d'existance sur un fraction_t existant\n" ) ;
   ( fraction_existe(fraction) ? printf("-->OK\n") : printf ("-->KO\n") )  ;
   
   printf( "Test destruction fraction\n" ) ;
-  fraction_detruire(&fraction);
+  fraction -> detruire((objet_t**)&fraction);
   ( fraction_existe(fraction) ? printf("-->KO\n") : printf ("-->OK\n") )  ;
 
 

@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <personne.h>
-
+#include <individu.h>
 
 /*
  * VARIABLE LOCALE
@@ -25,6 +25,10 @@ booleen_t personne_existe( personne_t * const personne )
 static 
 err_t personne_detruire( personne_t ** personne ) 
 {
+   
+   if((*personne) -> nom != NULL && (*personne) -> prenom != NULL){
+	/*((individu_t*)personne) -> detruire(((objet_t**)personne));*/
+   }
    free((*personne) -> prenom);
    free((*personne) -> nom);
    free((*personne) -> adresse);
@@ -47,7 +51,7 @@ void personne_afficher( personne_t * const personne )
   printf( "{" ) ; 
   if(  personne_existe(personne) ) 
     {
-    ((individu_t*)personne) -> afficher((objet_t*)personne);
+    ((individu_t*)personne) -> afficher(((objet_t*)personne));
     printf("%s %s", personne-> adresse, personne -> ville);
     }
   printf( "}" ) ; 
@@ -65,12 +69,13 @@ personne_t * personne_creer( char * nom, char * prenom, char * adresse, char * v
 {
   personne_cpt++;
   personne_t * personne = malloc(sizeof(personne_t));
+  
   personne -> nom = copyString(nom);
   personne -> prenom = copyString(prenom);
   personne -> adresse = copyString(adresse);
   personne -> ville = copyString(ville);
 
-  personne -> detruire = (void (*)(objet_t *))personne_detruire;
-  personne -> afficher = (err_t (*)(objet_t **))personne_afficher;
+  personne -> afficher = (void (*)(objet_t *))personne_afficher;
+  personne -> detruire = (err_t (*)(objet_t **))personne_detruire;
   return( personne ) ;
 }
