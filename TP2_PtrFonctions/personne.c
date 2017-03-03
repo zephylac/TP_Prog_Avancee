@@ -26,17 +26,9 @@ static
 err_t personne_detruire( personne_t ** personne ) 
 {
    
-   if((*personne) -> nom != NULL && (*personne) -> prenom != NULL){
-	/*((individu_t*)personne) -> detruire(((objet_t**)personne));*/
-   }
-   free((*personne) -> prenom);
-   free((*personne) -> nom);
    free((*personne) -> adresse);
-   free((*personne) -> ville);
-   (*personne) -> adresse = NULL;
-   (*personne) -> nom = NULL;
-   (*personne) -> prenom = NULL;
-   (*personne) -> ville = NULL;
+   free((*personne) -> ville); 
+   individu_detruire((individu_t**)personne);
    free((*personne));
    *personne = NULL;
    personne_cpt--;
@@ -51,8 +43,8 @@ void personne_afficher( personne_t * const personne )
   printf( "{" ) ; 
   if(  personne_existe(personne) ) 
     {
-    ((individu_t*)personne) -> afficher(((objet_t*)personne));
-    printf("%s %s", personne-> adresse, personne -> ville);
+	individu_afficher((individu_t*)personne);
+    	printf("%s %s", personne-> adresse, personne -> ville);
     }
   printf( "}" ) ; 
 }
@@ -68,10 +60,10 @@ extern
 personne_t * personne_creer( char * nom, char * prenom, char * adresse, char * ville) 
 {
   personne_cpt++;
-  personne_t * personne = malloc(sizeof(personne_t));
+  personne_t * personne = NULL;
+  personne = (personne_t*)individu_creer(nom, prenom);
   
-  personne -> nom = copyString(nom);
-  personne -> prenom = copyString(prenom);
+  personne = realloc(personne, sizeof(personne_t));
   personne -> adresse = copyString(adresse);
   personne -> ville = copyString(ville);
 

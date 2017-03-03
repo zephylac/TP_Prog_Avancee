@@ -22,7 +22,7 @@ booleen_t individu_existe( individu_t * const individu )
     return(VRAI) ; 
 }
 
-static 
+extern
 err_t individu_detruire( individu_t ** individu ) 
 {
    if((*individu) -> nom != NULL)
@@ -40,7 +40,7 @@ err_t individu_detruire( individu_t ** individu )
   	
 }
 
-static
+extern
 void individu_afficher( individu_t * const individu ) 
 {
 
@@ -52,7 +52,7 @@ void individu_afficher( individu_t * const individu )
   printf( "}" ) ; 
 }
 
-static
+extern
 char * copyString(char * string){
 	char * stringBis = malloc(sizeof(char)*strlen(string)+1);
 	strcpy(stringBis,string);

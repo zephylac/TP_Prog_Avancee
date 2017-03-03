@@ -32,5 +32,6 @@ extern unsigned long int individu_cpt  ;
  */
 extern individu_t * individu_creer(char * const prenom , char * const nom ) ;
 extern booleen_t individu_existe( individu_t * const individu ) ;
-
+extern err_t individu_detruire( individu_t ** individu ) ;
+extern void individu_afficher( individu_t * const individu ); 
 #endif
