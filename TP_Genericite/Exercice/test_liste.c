@@ -44,7 +44,8 @@ main(int argc, char * argv[])
 	abort();
       }  
   if(argc - optind == 1){
-	 printf(" N = %s\n",argv[optind]);
+	  N = atoi(argv[optind]);
+	  printf(" N = %s\n",N); 
   }
   printf("vflag = %d\n",vflag);
 
