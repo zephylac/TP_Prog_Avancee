@@ -136,8 +136,8 @@ err_t liste_detruire( liste_t ** liste, int taille_elem )
   int i;
   for(i = 0; i < (*liste) -> nb; i++){
 	if(((*liste) -> liste[i]) != NULL){
-		(*liste) -> detruire(((*liste) -> liste + i*taille_elem));
-		free((*liste) -> liste + i * taille_elem);
+		(*liste) -> detruire(((*liste) -> liste[i]));
+		free((*liste) -> liste[i]);
 	}
   }	
   free((*liste) -> liste);
