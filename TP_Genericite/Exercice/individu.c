@@ -25,19 +25,43 @@ booleen_t individu_existe( individu_t * const individu )
 extern 
 err_t individu_detruire( individu_t ** individu ) 
 {
-
+  /* 
+   * l'Objet est detruit en profondeur 
+   */
   /* Liberation attributs */
   free( (*individu)->nom ) ; 
   free( (*individu)->prenom ) ; 
   /* Liberation memoire de l'objet */
   free( (*individu) ) ;
-  /* Pour eviter les pointeurs fous */
+  /* 
+   * Sa reference est effacee 
+   * Pour eviter les pointeurs fous 
+   */
   (*individu) = NULL ; 
 
   individu_cpt-- ; 
 
   return(OK) ; 
 }
+
+
+err_t individu_effacer( individu_t ** individu ) 
+{
+  /* 
+   * l'Objet n'est pas detruit 
+   */
+
+  /* 
+   * Sa reference est effacee 
+   */
+  
+  (*individu) = NULL ; 
+
+  individu_cpt-- ; 
+
+  return(OK) ; 
+}
+
 
 extern
 void individu_afficher( individu_t * const individu ) 
@@ -93,4 +117,53 @@ int individu_comparer( const individu_t * const ind1 , const individu_t * const 
   int cmp = strcmp( ind1->nom , ind2->nom )  ;
   if( cmp ) return(cmp); 
   return( strcmp( ind1->prenom , ind2->prenom ) ) ;
+}
+
+
+extern
+err_t individu_copier( individu_t ** ind_cible ,  individu_t * ind_source )
+{
+  err_t noerr = OK ; 
+
+  if( individu_existe( (*ind_cible) ) )
+    {
+      if( ( noerr = individu_detruire( ind_cible ) ) )
+	return(noerr) ;
+    }
+
+  if( ! individu_existe( ind_source ) )
+    return(OK) ; 
+
+  if( ( (*ind_cible) = individu_creer( ind_source->nom , 
+				       ind_source->prenom ) ) )
+    return(ERR_DEB_MEMOIRE) ; 
+
+  return(OK) ; 
+}
+
+extern
+err_t individu_referencer( individu_t ** ind_cible ,  individu_t * ind_source )
+{
+  (*ind_cible) = ind_source ; 
+  return(OK) ; 
+}
+
+extern
+err_t ind_det(void ** ind){
+	return individu_detruire((individu_t**)ind);
+}
+
+extern
+void ind_aff(void * const ind){
+	individu_afficher((individu_t*)ind);
+}
+
+extern
+err_t ind_cp(void ** ind1, void * ind2){
+	return individu_copier((individu_t**)ind1, (individu_t*)ind2);
+}
+
+extern
+err_t ind_rf(void ** ind1, void * ind2){
+	return individu_referencer((individu_t**)ind1, (individu_t*)ind2);
 }

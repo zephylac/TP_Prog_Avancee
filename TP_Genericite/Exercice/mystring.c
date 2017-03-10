@@ -13,6 +13,9 @@ unsigned long int string_cpt = 0 ;
  * FONCTIONS
  */
 
+/*
+ * Test existance 
+ */
 extern 
 booleen_t string_existe( string_t * const string )
 {
@@ -22,6 +25,9 @@ booleen_t string_existe( string_t * const string )
     return(VRAI) ; 
 }
 
+/*
+ * Destruction 
+ */
 extern
 err_t string_detruire( string_t ** string ) 
 {
@@ -37,6 +43,30 @@ err_t string_detruire( string_t ** string )
 
   return(OK) ; 
 }
+/*
+ * Effacement 
+ */
+
+err_t string_effacer( string_t ** string ) 
+{
+  /* 
+   * l'Objet n'est pas detruit 
+   */
+
+  /* 
+   * Sa reference est effacee 
+   */
+  
+  (*string) = NULL ; 
+
+  string_cpt-- ; 
+
+  return(OK) ; 
+}
+
+/*
+ * Affichage
+ */
 
 extern
 void string_afficher( string_t * const string ) 
@@ -49,6 +79,10 @@ void string_afficher( string_t * const string )
     }
   printf( "}" ) ; 
 }
+
+/*
+ * Creation 
+ */
 
 extern 
 string_t * string_creer( char * const chaine ) 
@@ -77,8 +111,67 @@ string_t * string_creer( char * const chaine )
   return( string ) ;
 }
 
+/*
+ * Comparaison
+ */
+
 extern
 int string_comparer( const string_t * const str1 , const string_t * const str2 )
 {
   return(strcmp( str1->string , str2->string) ) ;
+}
+
+/*
+ * Affectation d'une string par reference 
+ */
+
+extern
+err_t string_referencer( string_t ** str_cible ,  string_t * str_source )
+{
+  (*str_cible) = str_source ; 
+  return(OK) ; 
+}
+
+/*
+ * Affectation d'un string par copie 
+ */
+
+extern
+err_t string_copier( string_t ** str_cible ,  string_t * str_source )
+{
+  err_t noerr = OK ; 
+
+  if( string_existe( (*str_cible) ) )
+    {
+      if( ( noerr = string_detruire( str_cible ) ) )
+	return(noerr) ;
+    }
+
+  if( ! string_existe( str_source ) )
+    return(OK) ; 
+
+  if( ( (*str_cible) = string_creer( str_source->string ) ) )
+    return(ERR_DEB_MEMOIRE) ; 
+
+  return(OK) ; 
+}
+
+extern
+err_t str_det(void ** str){
+	return string_detruire((string_t**)str);
+}
+
+extern
+void str_aff(void * const str){
+	string_afficher((string_t*)str);
+}
+
+extern
+err_t str_cp(void ** str1, void * str2){
+	return string_copier((string_t**)str1, (string_t*)str2);
+}
+
+extern
+err_t str_rf(void ** str1, void * str2){
+	return string_referencer((string_t**)str1, (string_t*)str2);
 }

@@ -76,7 +76,8 @@ booleen_t liste_vide( liste_t * const liste )
 extern 
 err_t liste_elem_ecrire( liste_t * liste , 
 			 void * const elem ,
-			 const int ind ) 
+			 const int ind )
+			  
 {
 
 #ifdef _DEBUG_
@@ -87,7 +88,8 @@ err_t liste_elem_ecrire( liste_t * liste ,
       return(ERR_LISTE_IND_ELEM);
     }
 #endif
-  liste->liste[ind] = elem ;
+  liste-> affectation(liste -> liste[ind] , elem);
+  /*liste->liste[ind] = elem ;*/
   return(OK) ;
 }
 
@@ -96,7 +98,7 @@ err_t liste_elem_ecrire( liste_t * liste ,
  * Creation d'une liste 
  */
 extern
-liste_t * liste_creer( const int nb, err_t(*detruire)(void **) )
+liste_t * liste_creer( const int nb, err_t(*detruire)(void **),err_t(*affectation)(void **, void *) )
 {
   liste_t * liste ;
   
@@ -105,7 +107,7 @@ liste_t * liste_creer( const int nb, err_t(*detruire)(void **) )
       fprintf( stderr , "liste_creer: debordement memoire lors de la creation d'une liste\n");
       return((liste_t *)NULL);
     }
-
+  liste->affectation = affectation;
   liste->detruire = detruire;
   liste->nb = nb ;
   liste->liste = (void**)NULL ;
@@ -129,13 +131,13 @@ liste_t * liste_creer( const int nb, err_t(*detruire)(void **) )
  */
 
 extern
-err_t liste_detruire( liste_t ** liste )
+err_t liste_detruire( liste_t ** liste, int taille_elem )
 {
   int i;
   for(i = 0; i < (*liste) -> nb; i++){
 	if(((*liste) -> liste[i]) != NULL){
-		(*liste)->liste[i] -> detruire(&((*liste) -> liste[i]));
-		free((*liste) -> liste[i]);
+		(*liste) -> detruire(((*liste) -> liste + i*taille_elem));
+		free((*liste) -> liste + i * taille_elem);
 	}
   }	
   free((*liste) -> liste);
@@ -155,16 +157,25 @@ void liste_afficher( liste_t * const liste ,void (*afficher)(void *))
   int i;
   for(i=0; i < liste -> nb;i++){
 	  afficher(liste-> liste[i]);
-  return ;
+  }
 }
+
+
+/*
+ * Tri Bulle
+ */
+static
+err_t liste_trier_bulle( liste_t * liste){
+
+  return(OK);
+}
+
+
+
 
 /*
  * Tri d'une liste 
- * 
- * A FAIRE 
- *
  */
-
 extern
 err_t liste_trier( liste_t * liste )
 {

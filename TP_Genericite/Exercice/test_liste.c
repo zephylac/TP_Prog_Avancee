@@ -44,8 +44,9 @@ main(int argc, char * argv[])
 	abort();
       }  
   if(argc - optind == 1){
-	  N = atoi(argv[optind]);
-	  printf(" N = %s\n",N); 
+	  /*N = atoi(argv[optind]);*/
+	  sscanf(argv[optind],"%i",&N);
+	  printf(" N = %i\n",N); 
   }
   printf("vflag = %d\n",vflag);
 
@@ -63,7 +64,7 @@ main(int argc, char * argv[])
   }
   char prenom[128] ;
   char nom[128] ; 
-  liste = liste_creer(N) ;  
+liste = liste_creer(N, &ind_det, &ind_rf) ;  
   for( i=0 ; i<N ; i++ ) 
     {
       sprintf( nom , "nom_%d" , N-i ) ;
@@ -74,45 +75,45 @@ main(int argc, char * argv[])
   
   if(vflag == 1){
   	printf( "Test affichage liste d'individus AVANT tri \n" ) ;
-  	liste_afficher( liste , ' ' ) ; 
+  	liste_afficher( liste , ind_aff ) ; 
   	printf( "\n");
 
   	printf( "Test Tri de la liste des individus\n" );
   	liste_trier( liste  ) ;
 
   	printf( "Test affichage liste d'individus APRES tri\n" ) ;
-  	liste_afficher( liste , ' ' ) ; 
+  	liste_afficher( liste , ind_aff ) ; 
   	printf( "\n");
  
   	printf( "Test destruction liste d'individus\n" ) ;
   }
-  if( ( noerr = liste_detruire( &liste ) ) ){ 
+  if( ( noerr = liste_detruire( &liste,sizeof(individu_t) ) ) ){ 
   	printf("Sortie avec code erreur = %d\n" , noerr ) ;
   	return(noerr) ; 
   }
   if(vflag == 1){
 	printf( "\nTest creation d'une liste de %d fractions \n" , N ) ;
   }
-  liste = liste_creer(N) ;  
+  liste = liste_creer(N, frac_det, frac_rf) ;  
   for( i=0 ; i<N ; i++ ){
       	fractions[i] = fraction_creer( N-i , N-i+1 ) ; 
       	liste_elem_ecrire( liste , fractions[i] , i ) ;
   }
   if(vflag == 1){
   	printf( "Test affichage liste de fractions AVANT tri\n" ) ;
-  	liste_afficher( liste , ' ' ) ; 
+  	liste_afficher( liste , frac_aff ) ; 
   	printf( "\n");
 
   	printf( "Test Tri de la liste des fractions\n" );
   	liste_trier( liste ) ;
 
   	printf( "Test affichage liste des fractions APRES tri\n" ) ;
-  	liste_afficher( liste ,  ' ' ) ; 
+  	liste_afficher( liste ,  frac_aff ) ; 
   	printf( "\n");
  
   	printf( "Test destruction liste de fractions\n" ) ;
   }
-  if( ( noerr = liste_detruire( &liste ) ) ) { 
+  if( ( noerr = liste_detruire( &liste, sizeof(fraction_t) ) ) ) { 
   	printf("Sortie avec code erreur = %d\n" , noerr ) ;
       	return(noerr) ; 
   }
@@ -120,7 +121,7 @@ main(int argc, char * argv[])
   	printf( "\nTest creation d'une liste de %d strings \n" , N ) ;
   }
   char string[128] ;
-  liste = liste_creer(N) ;  
+  liste = liste_creer(N, str_det, str_rf) ;  
   for( i=0 ; i<N ; i++ ){
       	sprintf( string , "string_%d" , N-i ) ; 
       	strings[i] = string_creer( string ) ; 
@@ -128,19 +129,19 @@ main(int argc, char * argv[])
   }
   if(vflag == 1){
   	printf( "Test affichage liste de strings AVANT tri\n" ) ;
-  	liste_afficher( liste ,  ' ' ) ; 
+  	liste_afficher( liste , str_aff) ; 
   	printf( "\n");
  
   	printf( "Test Tri de la liste des strings\n" );
   	liste_trier( liste  ) ;
   
   	printf( "Test affichage liste des strings APRES tri\n" ) ;
-  	liste_afficher( liste ,  ' ' ) ; 
+  	liste_afficher( liste , str_aff) ; 
   	printf( "\n");
   
   	printf( "Test destruction liste de strings\n" ) ;
   }	
-  if( ( noerr = liste_detruire( &liste  ) ) ){ 
+  if( ( noerr = liste_detruire( &liste, sizeof(string_t)  ) ) ){ 
   	printf("Sortie avec code erreur = %d\n" , noerr ) ;
   	return(noerr) ; 
   }
