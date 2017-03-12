@@ -163,25 +163,37 @@ void liste_afficher( liste_t * const liste ,void (*afficher)(void *))
 
 
 /*
+ * Inverse l'ordre d'un tableau
+ */
+static
+void inverserTab(liste_t * liste){
+  int i, j;
+  void ** temp = NULL;
+  for( i = 0,j = liste -> nb - 1; i < liste -> nb / 2; i++, j--){
+  	temp = liste->liste[i];
+	liste->liste[i] = liste->liste[j];
+	liste->liste[j] = temp;
+  }
+}
+
+/*
  * Tri bulle
  */
 static
-err_t liste_trier_bulle( liste_t * liste,int ordre, int (*comparer)(const void *, const void *))
+err_t liste_trier_bulle( liste_t * liste,ordre_t ordre, int (*comparer)(const void *, const void *))
 {
   int i, j, test;
   void * temp = NULL;
-  int triee;
+  int triee = 0;
   int taille = liste -> nb;
   for(i = 0; i < taille - 1; i++){
   	triee = 1;
 	for(j = 0; j < taille - i - 1 ; j++){
-		if(ordre == 1){
+		if(ordre == croissant){
 			test = comparer(&(liste->liste[j]), &(liste->liste[j+1]));
-			printf("test ordre = 1, test = %i\n",test);
 		}
 		else{
 			test = comparer(&(liste->liste[j+1]), &(liste->liste[j]));
-			printf("test ordre = 0, test = %i\n",test);
 		}
 		if(test > 0 ){
 				triee = 0;
@@ -191,7 +203,7 @@ err_t liste_trier_bulle( liste_t * liste,int ordre, int (*comparer)(const void *
 		}
 	}
 	if (triee) return(OK);
-  }	
+  }
   return(OK);
 }
 
@@ -199,8 +211,11 @@ err_t liste_trier_bulle( liste_t * liste,int ordre, int (*comparer)(const void *
  * Tri quicksort
  */
 static
-err_t liste_trier_qsort( liste_t * liste,int (*comparer)(const void *, const void * )){
+err_t liste_trier_qsort( liste_t * liste,ordre_t ordre, int (*comparer)(const void *, const void * )){
   qsort(liste -> liste, liste -> nb, sizeof(liste->liste[0]),comparer);
+  if (ordre == decroissant){
+  	inverserTab(liste);	
+  }
   return(OK);
 }
 
@@ -210,10 +225,10 @@ err_t liste_trier_qsort( liste_t * liste,int (*comparer)(const void *, const voi
  */
 
 extern 
-err_t liste_trier( liste_t * liste, int ordre, int (*comparer)(const void *, const void *), methode_tri_t tri){
+err_t liste_trier( liste_t * liste, ordre_t ordre, int (*comparer)(const void *, const void *), methode_tri_t tri){
   
   switch(tri){
-  		case qsort_t: liste_trier_qsort(liste, comparer); break;
+  		case qsort_t: liste_trier_qsort(liste, ordre, comparer); break;
   		case bulle_t: liste_trier_bulle(liste, ordre, comparer); break;
   		default: printf("Erreur tri non existant\n");
   }	

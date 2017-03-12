@@ -11,6 +11,10 @@ typedef enum {
        	bulle_t
 } methode_tri_t;
 
+typedef enum {
+	croissant,
+       	decroissant
+} ordre_t;
 
 typedef enum {
 	referencement,
@@ -102,7 +106,7 @@ extern void liste_afficher( liste_t * const liste , void(*afficher)(void *) );
 /*!
  * tri d'une liste 
  */
-extern err_t liste_trier( liste_t * liste, int ordre, int (*comparer)(const void *, const void *), methode_tri_t tri);
+extern err_t liste_trier( liste_t * liste, ordre_t ordre, int (*comparer)(const void *, const void *), methode_tri_t tri);
 
 /*! @} */
 #endif

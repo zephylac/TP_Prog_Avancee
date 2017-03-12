@@ -177,6 +177,6 @@ err_t frac_rf(void ** frac1, void * frac2){
 
 extern
 int frac_cmp(const void * frac1, const void * frac2){
-	return fraction_comparer((fraction_t*)frac1, (fraction_t*)frac2);
+	return fraction_comparer(*(fraction_t**)frac1, *(fraction_t**)frac2);
 }
 

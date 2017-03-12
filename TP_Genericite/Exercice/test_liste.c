@@ -17,6 +17,7 @@ static struct option longopts[] = {
 {"help", no_argument, 0, 'h'},
 {"ajout", required_argument, 0, 'a'},
 {"tri", required_argument, 0, 't'},
+{"ordre",required_argument, 0, 'o'},
 {0, 0, 0, 0}
 };
 
@@ -25,10 +26,11 @@ void usage(){
 	printf("Programme de test des listes homognènes\n");
 	printf("Usage : test_liste [options] <nombre d'elements dans les listes>\n");
 	printf("Options : \n");
-	printf("   -h | --help 			--> Aide\n");
-	printf("   -v | --verbose               --> Affiche les messages des traces\n");
-	printf("   -a | --ajout <copie | ref>  	--> Choix de la méthode d'ajout des éléments (référencement par défaut)\n");
-	printf("   -t | --tri   <qsort | bulle> --> Choix de la méthode de tri à utiliser (qsort par défaut.)\n");
+	printf("   -h | --help 			  --> Aide\n");
+	printf("   -v | --verbose                 --> Affiche les messages des traces\n");
+	printf("   -a | --ajout < copie | ref >   --> Choix de la méthode d'ajout des éléments (référencement par défaut)\n");
+	printf("   -t | --tri   < qsort | bulle > --> Choix de la méthode de tri à utiliser (qsort par défaut)\n");
+	printf("   -o | --ordre < + | - >         --> Choix de l'ordre du tri (croissant par défaut)\n");
 }
 
 
@@ -49,10 +51,11 @@ main(int argc, char * argv[])
   
   methode_elem_t methodeElem = referencement;
   methode_tri_t methodeTri = bulle_t;
+  ordre_t ordreTri = croissant;
 
 /* Traitement des arguments */ 
 
- while ((c = getopt_long(argc, argv, "vha:t:", longopts, NULL)) != -1){
+ while ((c = getopt_long(argc, argv, "vha:t:o:", longopts, NULL)) != -1){
     switch (c)
       {
       case 'v':
@@ -87,6 +90,18 @@ main(int argc, char * argv[])
 	}
 	break; 
       
+      case 'o':
+	if(strcmp("+", optarg) == 0)
+		ordreTri = croissant;
+	else if(strcmp("-", optarg) == 0)
+		ordreTri = decroissant;
+	else {
+		printf("Erreur : Méthode de tri %s inconnue.\n\n", optarg);
+		usage();
+		exit(0);
+	}
+	break; 
+
       case '?':
       	break;
       default : printf("Erreur : Option inconnue\n\n"); usage(); exit(0);
@@ -162,7 +177,7 @@ main(int argc, char * argv[])
   	printf( "\n");
 
   	printf( "Test Tri de la liste des individus\n" );
-  	liste_trier( liste, 0, ind_cmp, methodeTri) ;
+  	liste_trier( liste, ordreTri, ind_cmp, methodeTri) ;
 
   	printf( "Test affichage liste d'individus APRES tri\n" ) ;
   	liste_afficher( liste , ind_aff ) ; 
@@ -188,7 +203,7 @@ main(int argc, char * argv[])
   	printf( "\n");
 
   	printf( "Test Tri de la liste des fractions\n" );
-  	liste_trier( liste, 1, frac_cmp, methodeTri ) ;
+  	liste_trier( liste, ordreTri, frac_cmp, methodeTri ) ;
 
   	printf( "Test affichage liste des fractions APRES tri\n" ) ;
   	liste_afficher( liste ,  frac_aff ) ; 
@@ -216,7 +231,7 @@ main(int argc, char * argv[])
   	printf( "\n");
  
   	printf( "Test Tri de la liste des strings\n" );
-  	liste_trier( liste, 0, str_cmp, methodeTri) ;
+  	liste_trier( liste, ordreTri, str_cmp, methodeTri) ;
   
   	printf( "Test affichage liste des strings APRES tri\n" ) ;
   	liste_afficher( liste , str_aff) ; 
