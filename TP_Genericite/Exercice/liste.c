@@ -163,40 +163,48 @@ void liste_afficher( liste_t * const liste ,void (*afficher)(void *))
 
 
 /*
- * Tri Bulle
+ * Tri bulle
  */
 static
-err_t liste_trier_bulle( liste_t * liste){
-  int i;
-  void ** temp;
+err_t liste_trier_bulle( liste_t * liste, int (*comparer)(const void *, const void *))
+{
+  int i, j;
+  void * temp;
   int taille = liste -> nb;
-  int marqueurFin = 0;
-  while(!marqueurFin){
-	marqueurFin = 1;
-	for(i = 0; i < taille - 1 ; i++){
-		if( liste -> liste[i] > liste -> liste[i + 1]){
-			temp = liste -> liste[i];
-			liste -> liste[i] = liste -> liste[i + 1];
-			liste -> liste[i + 1] = temp;
+  for(i = 0; i < taille; i++){
+  	for(j = taille - 1; j > i ; j--){
+		if(comparer(&(liste->liste[j-1]), &(liste->liste[j]))){
+			temp = liste -> liste[j];
+			liste -> liste[j] = liste -> liste[j - 1];
+			liste -> liste[j - 1] = temp;
 		}
 	}
-	taille--;
   }	
   return(OK);
 }
 
-
+/*
+ * Tri quicksort
+ */
+static
+err_t liste_trier_qsort( liste_t * liste,int (*comparer)(const void *, const void * )){
+  qsort(liste -> liste, liste -> nb, sizeof(liste->liste[0]),comparer);
+  return(OK);
+}
 
 
 /*
- * Tri d'une liste 
+ * Tri d'une liste
  */
-extern
-err_t liste_trier( liste_t * liste )
-{
-  /*
-   * A FAIRE 
-   */
 
-  return(OK) ; 
+extern 
+err_t liste_trier( liste_t * liste, int ordre, int (*comparer)(const void *, const void *), methode_tri_t tri){
+  
+  switch(tri){
+  		case qsort_t: liste_trier_qsort(liste, comparer); break;
+  		case bulle_t: liste_trier_bulle(liste, comparer); break;
+  		default: printf("Erreur tri non existant\n");
+  }	
+  return(OK);
 }
+

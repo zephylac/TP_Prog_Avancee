@@ -175,3 +175,8 @@ extern
 err_t str_rf(void ** str1, void * str2){
 	return string_referencer((string_t**)str1, (string_t*)str2);
 }
+
+extern
+int str_cmp(const void * str1, const void * str2){
+	return string_comparer((string_t*)str1, (string_t*)str2);
+}

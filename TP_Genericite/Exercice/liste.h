@@ -6,6 +6,16 @@
 #define LISTE_NULL NULL
 #define LISTE_ID_NULL -1
 
+typedef enum {
+	qsort_t,
+       	bulle_t
+} methode_tri_t;
+
+
+typedef enum {
+	referencement,
+       	copie
+} methode_elem_t;
 
 typedef struct liste_s
 {
@@ -92,8 +102,7 @@ extern void liste_afficher( liste_t * const liste , void(*afficher)(void *) );
 /*!
  * tri d'une liste 
  */
-
-extern err_t liste_trier( liste_t * liste) ;
+extern err_t liste_trier( liste_t * liste, int ordre, int (*comparer)(const void *, const void *), methode_tri_t tri);
 
 /*! @} */
 #endif

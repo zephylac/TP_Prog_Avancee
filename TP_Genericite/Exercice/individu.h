@@ -44,4 +44,5 @@ extern err_t ind_det(void ** ind);
 extern void ind_aff(void * const ind);
 extern err_t ind_cp(void ** ind1, void * ind2);
 extern err_t ind_rf(void ** ind1, void * ind2);
+extern int ind_cmp(const void * ind1, const void * ind2);
 #endif
