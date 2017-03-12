@@ -169,22 +169,28 @@ static
 err_t liste_trier_bulle( liste_t * liste,int ordre, int (*comparer)(const void *, const void *))
 {
   int i, j, test;
-  void * temp;
+  void * temp = NULL;
+  int triee;
   int taille = liste -> nb;
-  for(i = 0; i < taille; i++){
-  	for(j = taille - 1; j > i ; j--){
+  for(i = 0; i < taille - 1; i++){
+  	triee = 1;
+	for(j = 0; j < taille - i - 1 ; j++){
 		if(ordre == 1){
-			test = comparer(&(liste->liste[j-1]), &(liste->liste[j]));
+			test = comparer(&(liste->liste[j]), &(liste->liste[j+1]));
+			printf("test ordre = 1, test = %i\n",test);
 		}
 		else{
-			test = comparer(&(liste->liste[j]), &(liste->liste[j-1]));
+			test = comparer(&(liste->liste[j+1]), &(liste->liste[j]));
+			printf("test ordre = 0, test = %i\n",test);
 		}
-		if(test){
-				temp = liste -> liste[j];
-				liste -> liste[j] = liste -> liste[j - 1];
-				liste -> liste[j - 1] = temp;
+		if(test > 0 ){
+				triee = 0;
+			 	temp = liste -> liste[j];
+				liste -> liste[j] = liste -> liste[j + 1];
+				liste -> liste[j + 1] = temp;
 		}
 	}
+	if (triee) return(OK);
   }	
   return(OK);
 }

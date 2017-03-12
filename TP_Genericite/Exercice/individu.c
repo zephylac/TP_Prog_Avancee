@@ -170,5 +170,5 @@ err_t ind_rf(void ** ind1, void * ind2){
 
 extern
 int ind_cmp(const void * ind1, const void * ind2){
-	return individu_comparer((individu_t*)ind1, (individu_t*)ind2);
+	return individu_comparer(*(individu_t**)ind1, *(individu_t**)ind2);
 }
