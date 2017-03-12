@@ -88,7 +88,7 @@ err_t liste_elem_ecrire( liste_t * liste ,
       return(ERR_LISTE_IND_ELEM);
     }
 #endif
-  liste-> affectation(liste -> liste[ind] , elem);
+  liste-> affectation(&(liste -> liste[ind]) , elem);
   /*liste->liste[ind] = elem ;*/
   return(OK) ;
 }
@@ -136,12 +136,13 @@ err_t liste_detruire( liste_t ** liste, int taille_elem )
   int i;
   for(i = 0; i < (*liste) -> nb; i++){
 	if(((*liste) -> liste[i]) != NULL){
-		(*liste) -> detruire(((*liste) -> liste[i]));
-		free((*liste) -> liste[i]);
+		(*liste) -> detruire(&((*liste) -> liste[i]));
+		(*liste) -> liste[i] = NULL;
 	}
   }	
   free((*liste) -> liste);
   free(*liste);
+  liste_cpt--;
   *liste = NULL;
   return(OK) ;
 }
@@ -166,7 +167,21 @@ void liste_afficher( liste_t * const liste ,void (*afficher)(void *))
  */
 static
 err_t liste_trier_bulle( liste_t * liste){
-
+  int i;
+  void ** temp;
+  int taille = liste -> nb;
+  int marqueurFin = 0;
+  while(!marqueurFin){
+	marqueurFin = 1;
+	for(i = 0; i < taille - 1 ; i++){
+		if( liste -> liste[i] > liste -> liste[i + 1]){
+			temp = liste -> liste[i];
+			liste -> liste[i] = liste -> liste[i + 1];
+			liste -> liste[i + 1] = temp;
+		}
+	}
+	taille--;
+  }	
   return(OK);
 }
 
