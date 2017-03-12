@@ -166,17 +166,23 @@ void liste_afficher( liste_t * const liste ,void (*afficher)(void *))
  * Tri bulle
  */
 static
-err_t liste_trier_bulle( liste_t * liste, int (*comparer)(const void *, const void *))
+err_t liste_trier_bulle( liste_t * liste,int ordre, int (*comparer)(const void *, const void *))
 {
-  int i, j;
+  int i, j, test;
   void * temp;
   int taille = liste -> nb;
   for(i = 0; i < taille; i++){
   	for(j = taille - 1; j > i ; j--){
-		if(comparer(&(liste->liste[j-1]), &(liste->liste[j]))){
-			temp = liste -> liste[j];
-			liste -> liste[j] = liste -> liste[j - 1];
-			liste -> liste[j - 1] = temp;
+		if(ordre == 1){
+			test = comparer(&(liste->liste[j-1]), &(liste->liste[j]));
+		}
+		else{
+			test = comparer(&(liste->liste[j]), &(liste->liste[j-1]));
+		}
+		if(test){
+				temp = liste -> liste[j];
+				liste -> liste[j] = liste -> liste[j - 1];
+				liste -> liste[j - 1] = temp;
 		}
 	}
   }	
@@ -202,7 +208,7 @@ err_t liste_trier( liste_t * liste, int ordre, int (*comparer)(const void *, con
   
   switch(tri){
   		case qsort_t: liste_trier_qsort(liste, comparer); break;
-  		case bulle_t: liste_trier_bulle(liste, comparer); break;
+  		case bulle_t: liste_trier_bulle(liste, ordre, comparer); break;
   		default: printf("Erreur tri non existant\n");
   }	
   return(OK);

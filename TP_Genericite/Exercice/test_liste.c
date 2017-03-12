@@ -52,7 +52,7 @@ main(int argc, char * argv[])
 
 /* Traitement des arguments */ 
 
- while ((c = getopt_long(argc, argv, "vha:t", longopts, NULL)) != -1)
+ while ((c = getopt_long(argc, argv, "vha:t:", longopts, NULL)) != -1){
     switch (c)
       {
       case 'v':
@@ -90,13 +90,23 @@ main(int argc, char * argv[])
       case '?':
       	break;
       default : printf("Erreur : Option inconnue\n\n"); usage(); exit(0);
-      }  
-  
-  if(argc - optind == 1){
-	  /*N = atoi(argv[optind]);*/
-	  sscanf(argv[optind],"%i",&N);
-	  printf(" N = %i\n",N); 
+      }
+  } 
+  argc -= optind;
+  argv += optind;
+
+    
+  if(argc == 1){
+	/*N = atoi(argv[optind]);*/
+	sscanf(argv[0],"%i",&N);
+	printf(" N = %i\n",N); 
   }
+  else{
+	printf("Erreur : 1 argument attendu, %d passé(s).\n\n", argc);
+	usage();
+	exit(0);
+  }  	
+  
   printf("vflag = %d\n",vflag);
 
 
@@ -127,10 +137,6 @@ main(int argc, char * argv[])
 	string_methode_detruire   = (err_t (*)(void **)) string_detruire;
   }
 
-
-
-
-
   individus = malloc( sizeof(individu_t *) * N )  ; 
   fractions = malloc( sizeof(fraction_t *) * N )  ;
   strings = malloc( sizeof(string_t *) * N )   ; 
@@ -156,7 +162,7 @@ main(int argc, char * argv[])
   	printf( "\n");
 
   	printf( "Test Tri de la liste des individus\n" );
-  	liste_trier( liste, 1, ind_cmp, methodeTri) ;
+  	liste_trier( liste, 0, ind_cmp, methodeTri) ;
 
   	printf( "Test affichage liste d'individus APRES tri\n" ) ;
   	liste_afficher( liste , ind_aff ) ; 
@@ -210,7 +216,7 @@ main(int argc, char * argv[])
   	printf( "\n");
  
   	printf( "Test Tri de la liste des strings\n" );
-  	liste_trier( liste, 1, str_cmp, methodeTri) ;
+  	liste_trier( liste, 0, str_cmp, methodeTri) ;
   
   	printf( "Test affichage liste des strings APRES tri\n" ) ;
   	liste_afficher( liste , str_aff) ; 
