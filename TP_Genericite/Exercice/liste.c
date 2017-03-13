@@ -131,7 +131,7 @@ liste_t * liste_creer( const int nb, err_t(*detruire)(void **),err_t(*affectatio
  */
 
 extern
-err_t liste_detruire( liste_t ** liste, int taille_elem )
+err_t liste_detruire( liste_t ** liste)
 {
   int i;
   for(i = 0; i < (*liste) -> nb; i++){

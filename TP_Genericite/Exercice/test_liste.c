@@ -185,7 +185,7 @@ main(int argc, char * argv[])
  
   	printf( "Test destruction liste d'individus\n" ) ;
   }
-  if( ( noerr = liste_detruire( &liste,sizeof(individu_t) ) ) ){ 
+  if( ( noerr = liste_detruire( &liste ) ) ){ 
   	printf("Sortie avec code erreur = %d\n" , noerr ) ;
   	return(noerr) ; 
   }
@@ -211,7 +211,7 @@ main(int argc, char * argv[])
  
   	printf( "Test destruction liste de fractions\n" ) ;
   }
-  if( ( noerr = liste_detruire( &liste, sizeof(fraction_t) ) ) ) { 
+  if( ( noerr = liste_detruire( &liste ) ) ) { 
   	printf("Sortie avec code erreur = %d\n" , noerr ) ;
       	return(noerr) ; 
   }
@@ -239,7 +239,7 @@ main(int argc, char * argv[])
   
   	printf( "Test destruction liste de strings\n" ) ;
   }	
-  if( ( noerr = liste_detruire( &liste, sizeof(string_t)  ) ) ){ 
+  if( ( noerr = liste_detruire( &liste ) ) ){ 
   	printf("Sortie avec code erreur = %d\n" , noerr ) ;
   	return(noerr) ; 
   }

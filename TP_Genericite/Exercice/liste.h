@@ -84,7 +84,7 @@ extern liste_t * liste_creer( const int nb,err_t(*detruire)(void **), err_t(*aff
  * Destruction d'une liste 
  */
 
-extern err_t liste_detruire( liste_t ** liste, int taille_elem) ; 
+extern err_t liste_detruire( liste_t ** liste) ; 
 
 
 /*! 
