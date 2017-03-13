@@ -114,7 +114,13 @@ main(int argc, char * argv[])
   if(argc == 1){
 	/*N = atoi(argv[optind]);*/
 	sscanf(argv[0],"%i",&N);
-	printf(" N = %i\n",N); 
+	if(N == 0){
+		usage();
+		exit(0);
+	}
+	else{
+	printf(" N = %i\n",N);
+	}
   }
   else{
 	printf("Erreur : 1 argument attendu, %d passé(s).\n\n", argc);
@@ -125,31 +131,31 @@ main(int argc, char * argv[])
   printf("vflag = %d\n",vflag);
 
 
-  err_t(*individu_methode_ajout)(void **, void *)    = NULL;
-  err_t(*fraction_methode_ajout)(void **, void *) = NULL; 
-  err_t(*string_methode_ajout)(void **, void *)   = NULL;
+  err_t(*individu_methode_ajout)(void *, void *)    = NULL;
+  err_t(*fraction_methode_ajout)(void *, void *) = NULL; 
+  err_t(*string_methode_ajout)(void *, void *)   = NULL;
   
-  err_t(*individu_methode_detruire)(void **)    = NULL;
-  err_t(*fraction_methode_detruire)(void **) = NULL;
-  err_t(*string_methode_detruire)(void **)   = NULL;
+  err_t(*individu_methode_detruire)(void *)    = NULL;
+  err_t(*fraction_methode_detruire)(void *) = NULL;
+  err_t(*string_methode_detruire)(void *)   = NULL;
 
   if(methodeElem == referencement){
   	individu_methode_ajout = ind_rf;
 	fraction_methode_ajout = frac_rf;
 	string_methode_ajout   = str_rf;
 
-	individu_methode_detruire = (err_t (*)(void **)) individu_effacer;
-	fraction_methode_detruire = (err_t (*)(void **)) fraction_effacer;
-	string_methode_detruire   = (err_t (*)(void **)) string_effacer;
+	individu_methode_detruire = ind_eff;
+	fraction_methode_detruire = frac_eff;
+	string_methode_detruire   = str_eff;
   } 
   else {
 	individu_methode_ajout = ind_cp;
 	fraction_methode_ajout = frac_cp;
 	string_methode_ajout   = str_cp;
 
-	individu_methode_detruire = (err_t (*)(void **)) individu_detruire;
-	fraction_methode_detruire = (err_t (*)(void **)) fraction_detruire;
-	string_methode_detruire   = (err_t (*)(void **)) string_detruire;
+	individu_methode_detruire = ind_det;
+	fraction_methode_detruire = frac_det;
+	string_methode_detruire   = str_det;
   }
 
   individus = malloc( sizeof(individu_t *) * N )  ; 
@@ -177,7 +183,7 @@ main(int argc, char * argv[])
   	printf( "\n");
 
   	printf( "Test Tri de la liste des individus\n" );
-  	liste_trier( liste, ordreTri, ind_cmp, methodeTri) ;
+  	liste_trier( liste, ordreTri, ind_cmp,ind_cmp_rev, methodeTri) ;
 
   	printf( "Test affichage liste d'individus APRES tri\n" ) ;
   	liste_afficher( liste , ind_aff ) ; 
@@ -203,7 +209,7 @@ main(int argc, char * argv[])
   	printf( "\n");
 
   	printf( "Test Tri de la liste des fractions\n" );
-  	liste_trier( liste, ordreTri, frac_cmp, methodeTri ) ;
+  	liste_trier( liste, ordreTri, frac_cmp, frac_cmp_rev, methodeTri ) ;
 
   	printf( "Test affichage liste des fractions APRES tri\n" ) ;
   	liste_afficher( liste ,  frac_aff ) ; 
@@ -231,7 +237,7 @@ main(int argc, char * argv[])
   	printf( "\n");
  
   	printf( "Test Tri de la liste des strings\n" );
-  	liste_trier( liste, ordreTri, str_cmp, methodeTri) ;
+  	liste_trier( liste, ordreTri, str_cmp, str_cmp_rev, methodeTri) ;
   
   	printf( "Test affichage liste des strings APRES tri\n" ) ;
   	liste_afficher( liste , str_aff) ; 

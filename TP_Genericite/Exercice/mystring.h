@@ -41,8 +41,11 @@ extern err_t string_referencer( string_t ** str_cible ,  string_t * str_source )
 extern err_t string_copier( string_t ** str_cible ,  string_t * str_source ) ; 
 
 extern void str_aff(void * const str);
-extern err_t str_det(void ** str);
-extern err_t str_cp(void ** str1, void * str2);
-extern err_t str_rf(void ** str1, void * str2);
+extern err_t str_eff(void * str);
+extern err_t str_det(void * str);
+extern err_t str_cp(void * str1, void * str2);
+extern err_t str_rf(void * str1, void * str2);
 extern int str_cmp(const void * str1, const void * str2);
+extern int str_cmp_rev(const void * str1, const void * str2);
+
 #endif

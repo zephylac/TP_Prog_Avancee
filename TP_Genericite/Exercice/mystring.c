@@ -157,7 +157,12 @@ err_t string_copier( string_t ** str_cible ,  string_t * str_source )
 }
 
 extern
-err_t str_det(void ** str){
+err_t str_eff(void * str){
+	return string_effacer((string_t**)str);
+}
+
+extern
+err_t str_det(void * str){
 	return string_detruire((string_t**)str);
 }
 
@@ -167,16 +172,21 @@ void str_aff(void * const str){
 }
 
 extern
-err_t str_cp(void ** str1, void * str2){
+err_t str_cp(void * str1, void * str2){
 	return string_copier((string_t**)str1, (string_t*)str2);
 }
 
 extern
-err_t str_rf(void ** str1, void * str2){
+err_t str_rf(void * str1, void * str2){
 	return string_referencer((string_t**)str1, (string_t*)str2);
 }
 
 extern
 int str_cmp(const void * str1, const void * str2){
 	return string_comparer(*(string_t**)str1, *(string_t**)str2);
+}
+
+extern
+int str_cmp_rev(const void * str1, const void * str2){
+	return string_comparer(*(string_t**)str2, *(string_t**)str1);
 }

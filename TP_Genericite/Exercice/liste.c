@@ -98,7 +98,7 @@ err_t liste_elem_ecrire( liste_t * liste ,
  * Creation d'une liste 
  */
 extern
-liste_t * liste_creer( const int nb, err_t(*detruire)(void **),err_t(*affectation)(void **, void *) )
+liste_t * liste_creer( const int nb, err_t(*detruire)(void *),err_t(*affectation)(void *, void *) )
 {
   liste_t * liste ;
   
@@ -163,43 +163,23 @@ void liste_afficher( liste_t * const liste ,void (*afficher)(void *))
 
 
 /*
- * Inverse l'ordre d'un tableau
- */
-static
-void inverserTab(liste_t * liste){
-  int i, j;
-  void ** temp = NULL;
-  for( i = 0,j = liste -> nb - 1; i < liste -> nb / 2; i++, j--){
-  	temp = liste->liste[i];
-	liste->liste[i] = liste->liste[j];
-	liste->liste[j] = temp;
-  }
-}
-
-/*
  * Tri bulle
  */
 static
-err_t liste_trier_bulle( liste_t * liste,ordre_t ordre, int (*comparer)(const void *, const void *))
+err_t liste_trier_bulle( liste_t * liste, int (*comparer)(const void *, const void *))
 {
-  int i, j, test;
+  int i, j;
   void * temp = NULL;
   int triee = 0;
   int taille = liste -> nb;
   for(i = 0; i < taille - 1; i++){
   	triee = 1;
 	for(j = 0; j < taille - i - 1 ; j++){
-		if(ordre == croissant){
-			test = comparer(&(liste->liste[j]), &(liste->liste[j+1]));
-		}
-		else{
-			test = comparer(&(liste->liste[j+1]), &(liste->liste[j]));
-		}
-		if(test > 0 ){
-				triee = 0;
-			 	temp = liste -> liste[j];
-				liste -> liste[j] = liste -> liste[j + 1];
-				liste -> liste[j + 1] = temp;
+		if(comparer(&(liste->liste[j]), &(liste->liste[j+1])) > 0 ){
+			triee = 0;
+			temp = liste -> liste[j];
+			liste -> liste[j] = liste -> liste[j + 1];
+			liste -> liste[j + 1] = temp;
 		}
 	}
 	if (triee) return(OK);
@@ -211,11 +191,8 @@ err_t liste_trier_bulle( liste_t * liste,ordre_t ordre, int (*comparer)(const vo
  * Tri quicksort
  */
 static
-err_t liste_trier_qsort( liste_t * liste,ordre_t ordre, int (*comparer)(const void *, const void * )){
+err_t liste_trier_qsort( liste_t * liste, int (*comparer)(const void *, const void * )){
   qsort(liste -> liste, liste -> nb, sizeof(liste->liste[0]),comparer);
-  if (ordre == decroissant){
-  	inverserTab(liste);	
-  }
   return(OK);
 }
 
@@ -225,12 +202,24 @@ err_t liste_trier_qsort( liste_t * liste,ordre_t ordre, int (*comparer)(const vo
  */
 
 extern 
-err_t liste_trier( liste_t * liste, ordre_t ordre, int (*comparer)(const void *, const void *), methode_tri_t tri){
+err_t liste_trier( liste_t * liste, ordre_t ordre, int (*comparer)(const void *, const void *), int (*comparer_rev)(const void *, const void *), methode_tri_t tri){
   
   switch(tri){
-  		case qsort_t: liste_trier_qsort(liste, ordre, comparer); break;
-  		case bulle_t: liste_trier_bulle(liste, ordre, comparer); break;
-  		default: printf("Erreur tri non existant\n");
+  		case qsort_t: 
+			if (ordre == croissant){
+				liste_trier_qsort(liste, comparer); break;
+			}
+			else{
+				liste_trier_qsort(liste,comparer_rev); break;
+			}
+		case bulle_t: 
+			if (ordre == croissant){
+				liste_trier_bulle(liste, comparer); break;
+  			}
+			else{
+				liste_trier_bulle(liste, comparer_rev); break;
+			}
+		default: printf("Erreur tri non existant\n");
   }	
   return(OK);
 }

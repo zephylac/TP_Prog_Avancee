@@ -43,8 +43,11 @@ extern err_t fraction_referencer( fraction_t ** frac_cible ,  fraction_t * frac_
 extern err_t fraction_copier( fraction_t ** frac_cible ,  fraction_t * frac_source ) ; 
 
 extern void frac_aff(void * const frac);
-extern err_t frac_det(void ** frac);
-extern err_t frac_cp(void ** frac1, void * frac2);
-extern err_t frac_rf(void ** frac1, void * frac2);
+extern err_t frac_eff(void * frac);
+extern err_t frac_det(void * frac);
+extern err_t frac_cp(void * frac1, void * frac2);
+extern err_t frac_rf(void * frac1, void * frac2);
 extern int frac_cmp(const void * frac1, const void * frac2);
+extern int frac_cmp_rev(const void * frac1, const void * frac2);
+
 #endif

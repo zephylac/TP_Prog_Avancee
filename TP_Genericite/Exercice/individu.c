@@ -148,9 +148,15 @@ err_t individu_referencer( individu_t ** ind_cible ,  individu_t * ind_source )
   return(OK) ; 
 }
 
+
 extern
-err_t ind_det(void ** ind){
-	return individu_detruire((individu_t**)ind);
+err_t ind_eff(void * ind){
+	return individu_effacer(ind);
+}
+
+extern
+err_t ind_det(void * ind){
+	return individu_detruire(ind);
 }
 
 extern
@@ -159,16 +165,21 @@ void ind_aff(void * const ind){
 }
 
 extern
-err_t ind_cp(void ** ind1, void * ind2){
-	return individu_copier((individu_t**)ind1, (individu_t*)ind2);
+err_t ind_cp(void * ind1, void * ind2){
+	return individu_copier(ind1, ind2);
 }
 
 extern
-err_t ind_rf(void ** ind1, void * ind2){
-	return individu_referencer((individu_t**)ind1, (individu_t*)ind2);
+err_t ind_rf(void * ind1, void * ind2){
+	return individu_referencer(ind1, ind2);
 }
 
 extern
 int ind_cmp(const void * ind1, const void * ind2){
 	return individu_comparer(*(individu_t**)ind1, *(individu_t**)ind2);
+}
+
+extern
+int ind_cmp_rev(const void * ind1, const void * ind2){
+	return individu_comparer(*(individu_t**)ind2, *(individu_t**)ind1);
 }

@@ -156,7 +156,12 @@ err_t fraction_copier( fraction_t ** frac_cible ,  fraction_t * frac_source )
 }
 
 extern
-err_t frac_det(void ** frac){
+err_t frac_eff(void * frac){
+	return fraction_effacer((fraction_t**)frac);
+}
+
+extern
+err_t frac_det(void * frac){
 	return fraction_detruire((fraction_t**)frac);
 }
 
@@ -166,12 +171,12 @@ void frac_aff(void * const frac){
 }
 
 extern
-err_t frac_cp(void ** frac1, void * frac2){
+err_t frac_cp(void * frac1, void * frac2){
 	return fraction_copier((fraction_t**)frac1, (fraction_t*)frac2);
 }
 
 extern
-err_t frac_rf(void ** frac1, void * frac2){
+err_t frac_rf(void * frac1, void * frac2){
 	return fraction_referencer((fraction_t**)frac1, (fraction_t*)frac2);
 }
 
@@ -180,3 +185,7 @@ int frac_cmp(const void * frac1, const void * frac2){
 	return fraction_comparer(*(fraction_t**)frac1, *(fraction_t**)frac2);
 }
 
+extern
+int frac_cmp_rev(const void * frac1, const void * frac2){
+	return fraction_comparer(*(fraction_t**)frac2, *(fraction_t**)frac1);
+}
