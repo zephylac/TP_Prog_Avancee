@@ -37,13 +37,14 @@ void usage(){
 int
 main(int argc, char * argv[]) 
 {
+
   err_t noerr = OK; 
   individu_t ** individus = NULL  ; 
   fraction_t ** fractions = NULL  ;
   string_t ** strings = NULL  ; 
 
   liste_t * liste = NULL ; 
-  int i = 0 ;
+  int i = 0; 
   int N = 0; 
   
   int c;
@@ -100,7 +101,7 @@ main(int argc, char * argv[])
 		usage();
 		exit(0);
 	}
-	break; 
+	break;
       default : printf("Erreur : Option inconnue\n\n"); usage(); exit(0);
       }
   } 
@@ -163,8 +164,8 @@ main(int argc, char * argv[])
 	individu_cmp = ind_cmp_rev;
 	fraction_cmp = frac_cmp_rev;
 	string_cmp   = str_cmp_rev;
-  }								}
-  else{
+  }								
+  else {
   	individu_cmp = ind_cmp;
 	fraction_cmp = frac_cmp;
 	string_cmp   = str_cmp;

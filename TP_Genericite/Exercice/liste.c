@@ -120,7 +120,9 @@ liste_t * liste_creer( const int nb, err_t(*detruire)(void *),err_t(*affectation
 	  return((liste_t *)NULL);
 	}
     }
-  for(i = 0 ; i < nb ; i++) liste->liste[i] = NULL;
+  for(i = 0 ; i < nb ; i++) 
+	  liste->liste[i] = NULL;
+  
   liste_cpt++ ; 
 
   return(liste);
