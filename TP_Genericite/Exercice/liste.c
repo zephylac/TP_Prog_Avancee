@@ -101,7 +101,7 @@ extern
 liste_t * liste_creer( const int nb, err_t(*detruire)(void *),err_t(*affectation)(void *, void *) )
 {
   liste_t * liste ;
-  
+  int i;
   if(( liste= malloc(sizeof(liste_t))) == NULL )
     {
       fprintf( stderr , "liste_creer: debordement memoire lors de la creation d'une liste\n");
@@ -202,23 +202,13 @@ err_t liste_trier_qsort( liste_t * liste, int (*comparer)(const void *, const vo
  */
 
 extern 
-err_t liste_trier( liste_t * liste, ordre_t ordre, int (*comparer)(const void *, const void *), int (*comparer_rev)(const void *, const void *), methode_tri_t tri){
-  
+err_t liste_trier( liste_t * liste, int (*comparer)(const void *, const void *), methode_tri_t tri)
+{
   switch(tri){
   		case qsort_t: 
-			if (ordre == croissant){
 				liste_trier_qsort(liste, comparer); break;
-			}
-			else{
-				liste_trier_qsort(liste,comparer_rev); break;
-			}
 		case bulle_t: 
-			if (ordre == croissant){
 				liste_trier_bulle(liste, comparer); break;
-  			}
-			else{
-				liste_trier_bulle(liste, comparer_rev); break;
-			}
 		default: printf("Erreur tri non existant\n");
   }	
   return(OK);

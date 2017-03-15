@@ -101,9 +101,6 @@ main(int argc, char * argv[])
 		exit(0);
 	}
 	break; 
-
-      case '?':
-      	break;
       default : printf("Erreur : Option inconnue\n\n"); usage(); exit(0);
       }
   } 
@@ -131,11 +128,11 @@ main(int argc, char * argv[])
   printf("vflag = %d\n",vflag);
 
 
-  err_t(*individu_methode_ajout)(void *, void *)    = NULL;
+  err_t(*individu_methode_ajout)(void *, void *) = NULL;
   err_t(*fraction_methode_ajout)(void *, void *) = NULL; 
   err_t(*string_methode_ajout)(void *, void *)   = NULL;
   
-  err_t(*individu_methode_detruire)(void *)    = NULL;
+  err_t(*individu_methode_detruire)(void *) = NULL;
   err_t(*fraction_methode_detruire)(void *) = NULL;
   err_t(*string_methode_detruire)(void *)   = NULL;
 
@@ -156,6 +153,21 @@ main(int argc, char * argv[])
 	individu_methode_detruire = ind_det;
 	fraction_methode_detruire = frac_det;
 	string_methode_detruire   = str_det;
+  }
+
+  int (*individu_cmp)(const void *, const void *) = NULL;
+  int (*fraction_cmp)(const void *, const void *) = NULL;
+  int (*string_cmp)(const void *, const void *) = NULL; 
+
+  if(ordreTri == decroissant){
+	individu_cmp = ind_cmp_rev;
+	fraction_cmp = frac_cmp_rev;
+	string_cmp   = str_cmp_rev;
+  }								}
+  else{
+  	individu_cmp = ind_cmp;
+	fraction_cmp = frac_cmp;
+	string_cmp   = str_cmp;
   }
 
   individus = malloc( sizeof(individu_t *) * N )  ; 
@@ -183,7 +195,7 @@ main(int argc, char * argv[])
   	printf( "\n");
 
   	printf( "Test Tri de la liste des individus\n" );
-  	liste_trier( liste, ordreTri, ind_cmp,ind_cmp_rev, methodeTri) ;
+  	liste_trier( liste, individu_cmp, methodeTri) ;
 
   	printf( "Test affichage liste d'individus APRES tri\n" ) ;
   	liste_afficher( liste , ind_aff ) ; 
@@ -214,7 +226,7 @@ main(int argc, char * argv[])
   	printf( "\n");
 
   	printf( "Test Tri de la liste des fractions\n" );
-  	liste_trier( liste, ordreTri, frac_cmp, frac_cmp_rev, methodeTri ) ;
+  	liste_trier( liste, fraction_cmp, methodeTri ) ;
 
   	printf( "Test affichage liste des fractions APRES tri\n" ) ;
   	liste_afficher( liste ,  frac_aff ) ; 
@@ -247,7 +259,7 @@ main(int argc, char * argv[])
   	printf( "\n");
  
   	printf( "Test Tri de la liste des strings\n" );
-  	liste_trier( liste, ordreTri, str_cmp, str_cmp_rev, methodeTri) ;
+  	liste_trier( liste, string_cmp, methodeTri) ;
   
   	printf( "Test affichage liste des strings APRES tri\n" ) ;
   	liste_afficher( liste , str_aff) ; 

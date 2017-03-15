@@ -106,7 +106,7 @@ extern void liste_afficher( liste_t * const liste , void(*afficher)(void *) );
 /*!
  * tri d'une liste 
  */
-extern err_t liste_trier( liste_t * liste, ordre_t ordre, int (*comparer)(const void *, const void *), int (*comparer_rev)(const void *, const void *), methode_tri_t tri);
+extern err_t liste_trier( liste_t * liste, int (*comparer)(const void *, const void *), methode_tri_t tri);
 
 /*! @} */
 #endif
