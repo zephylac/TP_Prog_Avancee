@@ -195,6 +195,11 @@ main(int argc, char * argv[])
   	printf("Sortie avec code erreur = %d\n" , noerr ) ;
   	return(noerr) ; 
   }
+  if(individus != NULL){
+	for(i = 0 ; i < N ; i++){
+		if(individus[i] != NULL) individu_detruire(&individus[i]);
+	}
+  }
   if(vflag == 1){
 	printf( "\nTest creation d'une liste de %d fractions \n" , N ) ;
   }
