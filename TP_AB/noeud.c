@@ -144,7 +144,7 @@ extern
 err_t noeud_detruire( noeud_t ** noeud , 
 		      err_t (*detruire)( void * e) ) 
 {
-  if(*noeud != NULL){
+ /* if(*noeud != NULL){
   	    if((*noeud)->gauche != NULL){
   	    	noeud_detruire((&((*noeud)->gauche)),detruire);
 			(*noeud)->gauche = NULL;
@@ -152,11 +152,11 @@ err_t noeud_detruire( noeud_t ** noeud ,
 		if((*noeud)->droit != NULL){
   	    	noeud_detruire((&((*noeud)->droit)),detruire);
   	    	(*noeud)->droit = NULL;
-  	    }	
-  	    detruire((*noeud)->etiquette);
-		free((*noeud));
+  	    }*/	
+  	    detruire(&((*noeud)->etiquette));
+	    free((*noeud));
   	    noeud = NULL;
-  }
+ /* }*/
   return(OK) ; 
 }
 /*
