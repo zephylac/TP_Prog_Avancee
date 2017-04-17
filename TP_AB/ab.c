@@ -93,10 +93,108 @@ err_t ab_detruire( ab_t ** arbre )
  * - symetrique 
  */
 
+
+// Print a givent amount of space (for drawing the tree)
+void affHauteur(int hauteur){
+	int i;
+	for(i = 0 ; i < hauteur ; i++)
+		printf("│   ");
+}
+
+// Affiche le noeud et ses enfants
+static void ab_print_enfant_inf(noeud_t * noeud, void (*afficher)(const void *), int hauteur){
+	if(noeud != NULL){
+		afficher(noeud->etiquette);
+
+		// Affiche l'enfant de gauche
+		if(noeud->gauche != NULL){
+			printf("\n");
+			affHauteur(hauteur);
+
+			if(noeud->droit != NULL)
+				printf("├");
+			else
+				printf("└");
+
+			printf("── ");
+			ab_print_enfant(noeud->gauche, afficher, hauteur + 1);
+		}
+
+
+		// Affiche l'enfant de droite
+		if(noeud->droit != NULL){
+			printf("\n");
+			affHauteur(hauteur);
+			printf("└── ");
+			ab_print_enfant(noeud->droit, afficher, hauteur + 1);
+		}
+	}
+}
+
+static void ab_print_enfant_post(noeud_t * noeud, void (*afficher)(const void *), int hauteur){
+	if(noeud != NULL){
+		afficher(noeud->etiquette);
+
+		// Affiche l'enfant de gauche
+		if(noeud->gauche != NULL){
+			printf("\n");
+			affHauteur(hauteur);
+
+			if(noeud->droit != NULL)
+				printf("├");
+			else
+				printf("└");
+
+			printf("── ");
+			ab_print_enfant(noeud->gauche, afficher, hauteur + 1);
+		}
+
+
+		// Affiche l'enfant de droite
+		if(noeud->droit != NULL){
+			printf("\n");
+			affHauteur(hauteur);
+			printf("└── ");
+			ab_print_enfant(noeud->droit, afficher, hauteur + 1);
+		}
+	}
+}
+
+static void ab_print_enfant_sym(noeud_t * noeud, void (*afficher)(const void *), int hauteur){
+	if(noeud != NULL){
+		afficher(noeud->etiquette);
+
+		// Affiche l'enfant de gauche
+		if(noeud->gauche != NULL){
+			printf("\n");
+			affHauteur(hauteur);
+
+			if(noeud->droit != NULL)
+				printf("├");
+			else
+				printf("└");
+
+			printf("── ");
+			ab_print_enfant(noeud->gauche, afficher, hauteur + 1);
+		}
+
+
+		// Affiche l'enfant de droite
+		if(noeud->droit != NULL){
+			printf("\n");
+			affHauteur(hauteur);
+			printf("└── ");
+			ab_print_enfant(noeud->droit, afficher, hauteur + 1);
+		}
+	}
+}
+
  extern 
 void ab_afficher( const ab_t * arbre , 
 		  void (*fonction_affichage)(const void *)) 
-{ 
+{
+  	ab_print_enfant(arbre->racine, fonction_affichage, 0);
+	printf("\n");
 }
 
 
