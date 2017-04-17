@@ -1,5 +1,5 @@
 #include <ab.h>
-
+#include <noeud.h>
 extern
 noeud_t * ab_racine_lire( const ab_t * arbre ) 
 {
@@ -117,7 +117,7 @@ static void ab_print_enfant_inf(noeud_t * noeud, void (*afficher)(const void *),
 				printf("└");
 
 			printf("── ");
-			ab_print_enfant(noeud->gauche, afficher, hauteur + 1);
+			ab_print_enfant_inf(noeud->gauche, afficher, hauteur + 1);
 		}
 
 
@@ -126,14 +126,13 @@ static void ab_print_enfant_inf(noeud_t * noeud, void (*afficher)(const void *),
 			printf("\n");
 			affHauteur(hauteur);
 			printf("└── ");
-			ab_print_enfant(noeud->droit, afficher, hauteur + 1);
+			ab_print_enfant_inf(noeud->droit, afficher, hauteur + 1);
 		}
 	}
 }
 
 static void ab_print_enfant_post(noeud_t * noeud, void (*afficher)(const void *), int hauteur){
 	if(noeud != NULL){
-		afficher(noeud->etiquette);
 
 		// Affiche l'enfant de gauche
 		if(noeud->gauche != NULL){
@@ -146,7 +145,7 @@ static void ab_print_enfant_post(noeud_t * noeud, void (*afficher)(const void *)
 				printf("└");
 
 			printf("── ");
-			ab_print_enfant(noeud->gauche, afficher, hauteur + 1);
+			ab_print_enfant_post(noeud->gauche, afficher, hauteur + 1);
 		}
 
 
@@ -155,8 +154,9 @@ static void ab_print_enfant_post(noeud_t * noeud, void (*afficher)(const void *)
 			printf("\n");
 			affHauteur(hauteur);
 			printf("└── ");
-			ab_print_enfant(noeud->droit, afficher, hauteur + 1);
+			ab_print_enfant_post(noeud->droit, afficher, hauteur + 1);
 		}
+		afficher(noeud->etiquette);
 	}
 }
 
@@ -175,7 +175,7 @@ static void ab_print_enfant_sym(noeud_t * noeud, void (*afficher)(const void *),
 				printf("└");
 
 			printf("── ");
-			ab_print_enfant(noeud->gauche, afficher, hauteur + 1);
+			ab_print_enfant_sym(noeud->gauche, afficher, hauteur + 1);
 		}
 
 
@@ -184,7 +184,7 @@ static void ab_print_enfant_sym(noeud_t * noeud, void (*afficher)(const void *),
 			printf("\n");
 			affHauteur(hauteur);
 			printf("└── ");
-			ab_print_enfant(noeud->droit, afficher, hauteur + 1);
+			ab_print_enfant_sym(noeud->droit, afficher, hauteur + 1);
 		}
 	}
 }
