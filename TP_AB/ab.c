@@ -102,7 +102,7 @@ void affHauteur(int hauteur){
 }
 
 // Affiche le noeud et ses enfants
-static void ab_print_enfant_inf(noeud_t * noeud, void (*afficher)(const void *), int hauteur){
+static void ab_print_enfant_pre(noeud_t * noeud, void (*afficher)(const void *), int hauteur){
 	if(noeud != NULL){
 		afficher(noeud->etiquette);
 
@@ -117,7 +117,7 @@ static void ab_print_enfant_inf(noeud_t * noeud, void (*afficher)(const void *),
 				printf("└");
 
 			printf("── ");
-			ab_print_enfant_inf(noeud->gauche, afficher, hauteur + 1);
+			ab_print_enfant_pre(noeud->gauche, afficher, hauteur + 1);
 		}
 
 
@@ -126,7 +126,7 @@ static void ab_print_enfant_inf(noeud_t * noeud, void (*afficher)(const void *),
 			printf("\n");
 			affHauteur(hauteur);
 			printf("└── ");
-			ab_print_enfant_inf(noeud->droit, afficher, hauteur + 1);
+			ab_print_enfant_pre(noeud->droit, afficher, hauteur + 1);
 		}
 	}
 }
@@ -162,22 +162,16 @@ static void ab_print_enfant_post(noeud_t * noeud, void (*afficher)(const void *)
 
 static void ab_print_enfant_sym(noeud_t * noeud, void (*afficher)(const void *), int hauteur){
 	if(noeud != NULL){
-		afficher(noeud->etiquette);
+		
 
 		// Affiche l'enfant de gauche
 		if(noeud->gauche != NULL){
 			printf("\n");
 			affHauteur(hauteur);
-
-			if(noeud->droit != NULL)
-				printf("├");
-			else
-				printf("└");
-
-			printf("── ");
+			printf("┌── ");
 			ab_print_enfant_sym(noeud->gauche, afficher, hauteur + 1);
 		}
-
+		afficher(noeud->etiquette);
 
 		// Affiche l'enfant de droite
 		if(noeud->droit != NULL){
@@ -190,13 +184,15 @@ static void ab_print_enfant_sym(noeud_t * noeud, void (*afficher)(const void *),
 }
 
  extern 
-void ab_afficher( const ab_t * arbre , 
-		  void (*fonction_affichage)(const void *)) 
+void ab_afficher( const ab_t * arbre , void (*fonction_affichage)(const void *), ab_parcours_t parcours)
 {
-  	ab_print_enfant(arbre->racine, fonction_affichage, 0);
-	printf("\n");
+	switch(parcours){
+		case PREFIXE: ab_afficher_prefixe(arbre->racine, fonction_affichage, 0);  break;
+		case POSTFIXE: ab_afficher_postfixe(arbre->racine, fonction_affichage, 0); break;
+		case SYMETRIQUE: ab_afficher_infixe(arbre->racine, fonction_affichage, 0);   break;
+		default: ab_afficher_prefixe(arbre->racine, fonction_affichage, 0);  break;
+	}
 }
-
 
 /*
  * Chargement d'un arbre a partir d'un fichier 
@@ -471,13 +467,33 @@ err_t ab_sauver( const ab_t * arbre  ,						/* Arbre Binaire d'elements a charge
  * Recherche du pere d'un noeud dans un arbre 
  */
 
+static noeud_t * ab_pere_rechercher_noeud(noeud_t * pere, noeud_t * fils){
+	noeud_t * res = NULL;
+	if(pere != NULL && fils != NULL){
+		if(fils == pere->gauche || fils = pere->droit){
+			return pere;
+		}
+		else{
+			if(pere->gauche != NULL){
+				res = ab_pere_rechercher_noeud(pere->gauche, fils);
+			}
+			if(res == NULL){
+				res = ab_pere_rechercher_noeud(pere->droit, fils);
+			}
+			if(res != NULL){
+				return res;
+			}
+		}
+	}
+	return NULL;			
+}
+
+
 extern
 noeud_t * ab_pere_rechercher( const ab_t * arbre , 
 			      const noeud_t * noeud_fils )
 {
-  /***********
-   * A FAIRE *
-   ***********/
-  return(NULL);
+ 	return(ab_pere_rechercher_noeud((arbre->racine), noeud_fils));
+  
 }
 
