@@ -53,33 +53,42 @@ void ab_animaux_afficher( const ab_t * arbre ,
 extern 
 void ab_animaux_reconnaitre( ab_t * arbre , 
 			     noeud_t * noeud,
+			     noeud_t * pere,
 			     err_t (*fonction_affectation)(void * , void *) ,
 			     void (*fonction_affichage)(const void *)) 
 {
 	char reponse[3];
-	char reponse1[50];
-	char question[50];
-	noeud_t * noeud1;
+	char chaine[50];
+	char chaine2[50];
+
+	string_t * rep;
+	string_t * ques;
 	noeud_t * noeud2;
 	int taille;
 
 	if(noeud == NULL){
-		noeud1 = ab_pere_rechercher(arbre, noeud);
+		noeud_afficher(pere,string_string_afficher_cb);
 		printf("Je donne ma langue au chat.\nQuelle est la réponse ? ");
-		scanf("%s",reponse1);
-		printf("Donnez une question dont la réponse est oui pour \"%s\" et non pour \"%s\" : ",reponse1,noeud1->etiquette);
-		scanf("%s",question);
-		taille = ab_taille_lire(arbre);
-		noeud2 = noeud_creer(taille + 1,noeud1->etiquette,NULL,NULL,string_copier_cb);
-		ab_taille_incrementer(arbre);
-		noeud_sad_ecrire(noeud1,noeud2);
+		scanf("%s",chaine);
+		rep = string_creer(chaine);
 		
-		noeud_etiquette_ecrire(noeud1, question, string_copier_cb);
+		printf("Donnez une question dont la réponse est oui pour \"%s\" et non pour \"",chaine);
+		noeud_afficher(pere,fonction_affichage);
+		printf("\" : ");
+		scanf("%s",chaine2);
+		ques = string_creer(chaine2);
 
 		taille = ab_taille_lire(arbre);
-		noeud2 = noeud_creer(taille + 1,reponse1,NULL,NULL, string_copier_cb);
+		noeud2 = noeud_creer(taille + 1,pere->etiquette,NULL,NULL,string_copier_cb);
 		ab_taille_incrementer(arbre);
-		noeud_sag_ecrire(noeud1,noeud2);
+		noeud_sad_ecrire(pere,noeud2);
+		
+		noeud_etiquette_ecrire(pere, ques, string_copier_cb);
+
+		taille = ab_taille_lire(arbre);
+		noeud2 = noeud_creer(taille + 1,rep,NULL,NULL, string_copier_cb);
+		ab_taille_incrementer(arbre);
+		noeud_sag_ecrire(pere,noeud2);
 
 	}
 	else{
@@ -93,10 +102,10 @@ void ab_animaux_reconnaitre( ab_t * arbre ,
 			scanf("%s",reponse);
 		}*/
 		if(strcmp("oui",reponse) == 0){
-			ab_animaux_reconnaitre(arbre,noeud->gauche,fonction_affectation,string_string_afficher_cb);
+			ab_animaux_reconnaitre(arbre,noeud->gauche,noeud,fonction_affectation,string_string_afficher_cb);
 		}
 		if(strcmp("non",reponse) == 0){
-			ab_animaux_reconnaitre(arbre,noeud->droit,fonction_affectation,string_string_afficher_cb);
+			ab_animaux_reconnaitre(arbre,noeud->droit,noeud,fonction_affectation,string_string_afficher_cb);
 		}
 	}
 }
