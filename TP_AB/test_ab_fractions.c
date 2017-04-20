@@ -29,7 +29,7 @@ main(int argc , char * argv[] )
       printf( "\t <parcours>: type de parcours dans l'affichage de l'arbre\n" ) ; 
       printf( "\t            INF  --> Infixe \n" ) ; 
       printf( "\t            POST --> Postfixe \n" ) ; 
-      printf( "\t            SYM  --> Symetrique \n" ) ; 
+      printf( "\t            PRE  --> Prefixe \n" ) ; 
       exit(1) ;
     }
 
@@ -37,16 +37,16 @@ main(int argc , char * argv[] )
   N = powf( 2 , exp_n ) - 1 ; 
   
   ab_parcours_t parcours = UNK  ; 
-  if( ! strcmp( argv[2] , "INF"  ) ) parcours = INFIXE ;
-  if( ! strcmp( argv[2] , "POST" ) ) parcours = POSTFIXE ;
   if( ! strcmp( argv[2] , "SYM"  ) ) parcours = SYMETRIQUE ;
+  if( ! strcmp( argv[2] , "POST" ) ) parcours = POSTFIXE ;
+  if( ! strcmp( argv[2] , "PRE"  ) ) parcours = PREFIXE;
   if( parcours == UNK ) 
     {
       printf( "Parametre <parcours> incorrect (%s)\n" , argv[2] ) ; 
       printf( "\t <parcours>: type de parcours dans l'affichage de l'arbre\n" ) ; 
       printf( "\t            INF  --> Infixe \n" ) ; 
       printf( "\t            POST --> Postfixe \n" ) ; 
-      printf( "\t            SYM  --> Symetrique \n" ) ; 
+      printf( "\t            PRE  --> Prefixe \n" ) ; 
       exit(1) ;
     }
 
@@ -55,8 +55,7 @@ main(int argc , char * argv[] )
   /* 
    * Creation variables de travail 
    */
-
-  fractions = malloc( sizeof(fraction_t *) * N+1 )  ; 
+  fractions = malloc( sizeof(fraction_t *) * N +1 )  ; 
 
   fractions[0] = NULL ; 
   for( i=1 ; i<N+1 ; i++ ) 
@@ -64,7 +63,8 @@ main(int argc , char * argv[] )
       fractions[i] = fraction_creer( N-i , N-i+1 ) ; 
     }
 
-  noeuds = malloc( sizeof(noeud_t *) * N+1 ) ; 
+  noeuds = malloc( sizeof(noeud_t *) * N + 1 ) ; 
+  
   noeuds[0] = NULL ; 
   for( i=1 ; i<N+1 ; i++ )
     {
@@ -102,7 +102,7 @@ main(int argc , char * argv[] )
    }
 
   printf( "Test affichage arbre\n" ) ;
-  ab_afficher( arbre , fraction_afficher_cb ) ; 
+  ab_afficher( arbre , fraction_afficher_cb, parcours) ; 
   printf( "\n");
 
   printf( "Test d'existance sur un arbre ab_t existant\n" ) ;
@@ -121,7 +121,7 @@ main(int argc , char * argv[] )
       printf("Sortie avec code erreur = %d\n" , noerr ) ;
       return(noerr) ; 
     }
-  
+
  printf( "Test chargement arbre\n" ) ;
  if( ( noerr = ab_charger( &arbre  , FICH_TEST , 			
 			   fraction_copier_cb , fraction_detruire_cb , 
@@ -131,19 +131,23 @@ main(int argc , char * argv[] )
      err_print(noerr) ;
      return(noerr) ; 
    }
-
   printf( "Affichage arbre charge\n" ) ;
-  ab_afficher( arbre , fraction_afficher_cb ) ; 
+  ab_afficher( arbre , fraction_afficher_cb, parcours) ; 
   printf( "\n");
 
   /*
    * Destructions variables de travail 
    */
-  
-  for( i=1 ; i<N ; i++ ) 
-    {
-      fraction_detruire( &fractions[i] ) ; 
-    }
+
+  ab_detruire(&arbre);
+
+  for(i = 1 ; i < N ; i++){
+	  fraction_detruire_cb(&(fractions[i]));
+  }
+
+  free(fractions);
+  free(noeuds);
+
 
   printf( "Fin du programme de test sur les objets de type arbre ab_t\n" ) ; 
 

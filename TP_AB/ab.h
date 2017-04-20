@@ -10,7 +10,7 @@
  * Type de parcours
  */
 
-typedef enum ab_parcours_s { UNK , INFIXE , POSTFIXE , SYMETRIQUE } ab_parcours_t ;
+typedef enum ab_parcours_s { UNK , PREFIXE , POSTFIXE , SYMETRIQUE } ab_parcours_t ;
 
 /* 
  * Type Arbre Binaire 
@@ -57,8 +57,7 @@ extern err_t ab_detruire( ab_t ** arbre )  ;
  * Les types de parcours sont : infixe, postfixe et symetrique 
  */
 
-extern void ab_afficher( const ab_t * arbre , 
-			 void (*fonction_affichage)(const void *))  ;
+extern void ab_afficher( const ab_t * arbre , void (*fonction_affichage)(const void *), ab_parcours_t parcours);
 
 /*
  * Chargement d'un arbre a partir d'un fichier 
@@ -82,7 +81,7 @@ extern  err_t ab_sauver( const ab_t * arbre  ,						/* Arbre Binaire d'elements 
  * Recherche du pere d'un noeud dans un arbre 
  */
 
-extern noeud_t * ab_pere_rechercher( const ab_t * arbre , 
-				     const noeud_t * noeud_fils ) ;
+extern noeud_t * ab_pere_rechercher( ab_t * arbre , 
+				     noeud_t * noeud_fils ) ;
 
 #endif

@@ -41,7 +41,7 @@ main( int argc  , char * argv[] )
   continuer = VRAI ; 
   while( continuer )
     {
-      ab_animaux_reconnaitre( arbre , string_copier_cb , string_string_afficher_cb ) ; 
+      ab_animaux_reconnaitre( arbre , arbre->racine, string_copier_cb , string_string_afficher_cb ) ; 
       continuer = OuiNon_saisir("Voulez vous recommencer ? ") ;       
     }
   printf( "\n");

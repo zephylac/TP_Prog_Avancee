@@ -19,6 +19,7 @@ extern void ab_animaux_afficher( const ab_t * arbre ,
  */
 
 extern void ab_animaux_reconnaitre( ab_t * arbre , 
+				    noeud_t * noeud,
 				    err_t (*fonction_affectation)(void * , void *) ,
 				    void (*fonction_affichage)(const void *)) ;
 #endif

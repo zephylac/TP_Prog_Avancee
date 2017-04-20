@@ -36,7 +36,7 @@ err_t noeud_etiquette_ecrire( noeud_t * noeud ,
 			      err_t (*affecter)( void * e1 , void * e2 ) ) 
 {
   if(noeud != NULL)
-  	  affecter(noeud->etiquette, etiquette);
+  	  affecter(&(noeud->etiquette), etiquette);
   return(OK) ; 
 }
 
@@ -129,7 +129,8 @@ noeud_t * noeud_creer( const int numero ,
   noeud = malloc(sizeof(noeud_t));
 
 	noeud->numero 	= numero;
-	affecter(&noeud->etiquette, etiquette);
+	noeud->etiquette = NULL;
+	affecter(&(noeud->etiquette), etiquette);
 	noeud->gauche 	= sous_arbre_gauche;
 	noeud->droit  	= sous_arbre_droit;
  
@@ -155,7 +156,7 @@ err_t noeud_detruire( noeud_t ** noeud ,
   	    }*/	
   	    detruire(&((*noeud)->etiquette));
 	    free((*noeud));
-  	    noeud = NULL;
+  	    (*noeud) = NULL;
  /* }*/
   return(OK) ; 
 }
@@ -213,33 +214,25 @@ err_t noeud_fd_sauver( noeud_t * noeud  ,	                  /* Noeud a sauvegard
 
 
 /* Sur le numero */
+	
 
 extern
 booleen_t noeud_numero_rechercher( noeud_t ** result ,        /* Resultat: @ du noeud trouve */  
 				   noeud_t * racine ,  /* Racine de l'arbre de recherche */
 				   const int numero       )  /* Numero a rechercher dans l'arbre */
 {
-booleen_t gauche;
-booleen_t droit;
-  if(racine != NULL){
+	if(racine != NULL){
+
 		if(racine->numero == numero){
-			result = &racine;
+			*result = racine;;
 			return (VRAI);
-  		}
-		else{
-			gauche  = noeud_numero_rechercher(result,racine->gauche, numero);
-			droit = noeud_numero_rechercher(result,racine->droit, numero);
-
-			if(gauche)
-				result = &(racine->gauche);
-			result = &(racine->	droit);
-			return(VRAI);
 		}
-  }
-  result = NULL;
-  return(FAUX) ; 
+	
+		// Après avoir recherché à gauche puis à droite, on retourne la valeur renvoyée par soit l'un soit l'autre
+		return noeud_numero_rechercher(result, racine->gauche, numero) || noeud_numero_rechercher(result, racine->droit,  numero);
+	}
+	return (FAUX);
 }
-
 
 /* Sur l'etiquette */
 
@@ -249,30 +242,18 @@ booleen_t noeud_rechercher( noeud_t ** result ,			 /* Resultat: @ du noeud trouv
 			    void * etiquette     ,		 /* Valeur a rechercher dans l'arbre */
 			    int (*comparer)(void * n1 , void * n2) ) /* Fonction de comparaison des etiquettes */
 {
-  booleen_t gauche;
-  booleen_t droit;
-  if(racine != NULL){
+	if(racine != NULL){
 		if(comparer(racine->etiquette, etiquette) == 0){
-			result = &racine;
+			*result = racine;
 			return (VRAI);
 		}
-		else{
-			if(racine->gauche != NULL){
-				gauche  = noeud_rechercher(result,racine->gauche, etiquette, comparer);
-				if(gauche){
-					result = &(racine->gauche);
-					return(VRAI);
-				}
-			}
-			if(racine->droit != NULL){
-				droit   = noeud_rechercher(result,racine->droit , etiquette, comparer);
-				if(droit){
-					result = &(racine->droit);
-					return(VRAI);
-				}
-			}		
-		}
-  }
-  result = NULL;
-  return(FAUX) ; 
+
+		booleen_t gauche = noeud_rechercher(result, racine->gauche, etiquette, comparer);
+		booleen_t droit  = noeud_rechercher(result, racine->droit,  etiquette, comparer);
+
+		// Après avoir recherché à gauche puis à droite, on retourne la valeur renvoyée par soit l'un soit l'autre
+		return gauche || droit;
+	}
+	return (FAUX);
+
 }

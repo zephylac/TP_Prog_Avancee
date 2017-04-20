@@ -14,7 +14,6 @@ main(int argc , char * argv[] )
   individu_t ** individus = NULL  ; 
   noeud_t ** noeuds = NULL ; 
   ab_t * arbre = NULL ; 
-
   float exp_n = 0 ; 
   float N = 0 ; 
 
@@ -27,7 +26,7 @@ main(int argc , char * argv[] )
       printf( "usage: %s 2<n> <parcours>\n" , nomprog ) ; 
       printf( "\t n: puissance de 2; n^2 - 1  representera le nombre d'elements de l'arbre\n" ) ; 
       printf( "\t <parcours>: type de parcours dans l'affichage de l'arbre\n" ) ; 
-      printf( "\t            INF  --> Infixe \n" ) ; 
+      printf( "\t            PRE  --> Prefixe \n" ) ; 
       printf( "\t            POST --> Postfixe \n" ) ; 
       printf( "\t            SYM  --> Symetrique \n" ) ; 
       exit(1) ;
@@ -38,14 +37,14 @@ main(int argc , char * argv[] )
 
 
   ab_parcours_t parcours = UNK  ; 
-  if( ! strcmp( argv[2] , "INF"  ) ) parcours = INFIXE ;
+  if( ! strcmp( argv[2] , "PRE"  ) ) parcours = PREFIXE ;
   if( ! strcmp( argv[2] , "POST" ) ) parcours = POSTFIXE ;
   if( ! strcmp( argv[2] , "SYM"  ) ) parcours = SYMETRIQUE ;
   if( parcours == UNK ) 
     {
       printf( "Parametre <parcours> incorrect (%s)\n" , argv[2] ) ; 
       printf( "\t <parcours>: type de parcours dans l'affichage de l'arbre\n" ) ; 
-      printf( "\t            INF  --> Infixe \n" ) ; 
+      printf( "\t            PRE  --> Prefixe \n" ) ; 
       printf( "\t            POST --> Postfixe \n" ) ; 
       printf( "\t            SYM  --> Symetrique \n" ) ; 
       exit(1) ;
@@ -57,31 +56,32 @@ main(int argc , char * argv[] )
    * Creation variables de travail 
    */
 
-  individus = malloc( sizeof(individu_t *) * N+1 )  ; 
+  individus = malloc( sizeof(individu_t *) * N)  ; 
 
   char prenom[128] ;
   char nom[128] ; 
-  individus[0] = NULL ;
-  for( i=1 ; i<N+1 ; i++ ) 
+  for( i=0 ; i<N ; i++ ) 
     {
       sprintf( nom , "nom_%d" , (int)N-i ) ;
       sprintf( prenom , "prenom_%d" , (int)N-i ) ;
       individus[i] = individu_creer( prenom , nom ) ; 
     }
 
-  noeuds = malloc( sizeof(noeud_t *) * N+1 ) ; 
-  noeuds[0] = NULL ; 
-  for( i=1 ; i<N+1 ; i++ )
+  noeuds = malloc( sizeof(noeud_t *) * N ) ; 
+  for( i=0 ; i<N ; i++ )
     {
       noeuds[i]= noeud_creer( i , individus[i] , NULL , NULL , individu_referencer_cb ) ; 
     }
 
-  for( i=1 ; i<N+1 ; i++ )
+  for( i=0 ; i<N ; i++ )
     {
-      if( 2*i <= N ) 
+      if( 2*i+1 < N ) 
 	{
-	  noeud_sag_ecrire( noeuds[i] , noeuds[2*i] ) ; 
-	  noeud_sad_ecrire( noeuds[i] , noeuds[(2*i)+1] ) ; 
+	  noeud_sag_ecrire( noeuds[i] , noeuds[(2*i)+1] ) ; 
+	}
+     if( 2*i+2 < N ) 
+	{
+	  noeud_sad_ecrire( noeuds[i] , noeuds[(2*i)+2] ) ; 
 	}
     }
   
@@ -99,7 +99,7 @@ main(int argc , char * argv[] )
  printf( "Rattachement arbre a sa racine\n" ) ;
  if( N > 0 )
    {
-     if( ( noerr = ab_racine_ecrire( arbre , noeuds[1] ) ) )
+     if( ( noerr = ab_racine_ecrire( arbre , noeuds[0] ) ) )
        { 
 	 printf("Sortie avec code erreur = %d\n" , noerr ) ;
 	 return(noerr) ; 
@@ -107,7 +107,7 @@ main(int argc , char * argv[] )
    }
 
   printf( "Test affichage arbre\n" ) ;
-  ab_afficher( arbre , individu_afficher_cb ) ; 
+  ab_afficher( arbre , individu_afficher_cb, parcours ) ; 
   printf( "\n");
 
   printf( "Test d'existance sur un arbre ab_t existant\n" ) ;
@@ -126,9 +126,10 @@ main(int argc , char * argv[] )
       printf("Sortie avec code erreur = %d\n" , noerr ) ;
       return(noerr) ; 
     }
-  
- printf( "Test chargement arbre\n" ) ;
- if( ( noerr = ab_charger( &arbre  , FICH_TEST , 			
+
+
+  printf( "Test chargement arbre\n" ) ;
+  if( ( noerr = ab_charger( &arbre  , FICH_TEST , 			
 			   individu_copier_cb , individu_detruire_cb , 
 			   individu_charger_cb ) ) )  
    { 
@@ -138,18 +139,26 @@ main(int argc , char * argv[] )
    }
 
   printf( "Affichage arbre charge\n" ) ;
-  ab_afficher( arbre , individu_afficher_cb ) ; 
+  ab_afficher( arbre , individu_afficher_cb, parcours ) ; 
   printf( "\n");
 
+  printf( "Test destruction arbre\n" ) ;
+  if( ( noerr = ab_detruire( &arbre ) ) )
+    { 
+      printf("Sortie avec code erreur = %d\n" , noerr ) ;
+      return(noerr) ; 
+    }
   /*
    * Destructions variables de travail 
    */
   
-  for( i=1 ; i<N ; i++ ) 
+  for( i=0 ; i<N ; i++ ) 
     {
       individu_detruire( &individus[i] ) ; 
     }
-
+  
+  free(individus);
+  free(noeuds);
   printf( "Fin du programme de test sur les objets de type arbre ab_t\n" ) ; 
 
   return(0) ; 

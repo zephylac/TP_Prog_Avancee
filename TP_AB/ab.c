@@ -44,10 +44,10 @@ booleen_t ab_existe( const ab_t * arbre )
 extern
 booleen_t ab_vide( const ab_t * arbre )
 {
-  if(arbre->racine->gauche == NULL && arbre->racine->droit == NULL){
-  	  return (VRAI);
+  if(arbre->racine != NULL){
+  	  return (FAUX);
   }
-  return(FAUX);
+  return(VRAI);
 }
 
 /*
@@ -75,12 +75,23 @@ ab_t * ab_creer( err_t (*fonction_affectation)( void * e1 , void * e2 ) ,	/*!< F
  * Destruction 
  */
 
+static err_t ab_detruire_bis( noeud_t ** noeud, err_t (*detruire) (void *)){
+	if(*noeud == NULL){
+		return(OK);
+	}
+	ab_detruire_bis(&((*noeud)->gauche),detruire);
+	ab_detruire_bis(&((*noeud)->droit),detruire);
+	noeud_detruire(noeud,detruire);
+	return(OK);
+}
+
 extern 
 err_t ab_detruire( ab_t ** arbre ) 
 {
   if(*arbre != NULL){                                                           
-        (*arbre)->detruire(arbre);	                             
-        (*arbre) = NULL;                                       
+          ab_detruire_bis(&((*arbre)->racine),(*arbre)->detruire);
+	  free(*arbre);
+	  (*arbre) = NULL;                                       
   }                                                                             
   return(OK) ; 
 }
@@ -102,7 +113,7 @@ void affHauteur(int hauteur){
 }
 
 // Affiche le noeud et ses enfants
-static void ab_print_enfant_pre(noeud_t * noeud, void (*afficher)(const void *), int hauteur){
+static void ab_afficher_prefixe(noeud_t * noeud, void (*afficher)(const void *), int hauteur){
 	if(noeud != NULL){
 		afficher(noeud->etiquette);
 
@@ -117,7 +128,7 @@ static void ab_print_enfant_pre(noeud_t * noeud, void (*afficher)(const void *),
 				printf("└");
 
 			printf("── ");
-			ab_print_enfant_pre(noeud->gauche, afficher, hauteur + 1);
+			ab_afficher_prefixe(noeud->gauche, afficher, hauteur + 1);
 		}
 
 
@@ -126,12 +137,12 @@ static void ab_print_enfant_pre(noeud_t * noeud, void (*afficher)(const void *),
 			printf("\n");
 			affHauteur(hauteur);
 			printf("└── ");
-			ab_print_enfant_pre(noeud->droit, afficher, hauteur + 1);
+			ab_afficher_prefixe(noeud->droit, afficher, hauteur + 1);
 		}
 	}
 }
 
-static void ab_print_enfant_post(noeud_t * noeud, void (*afficher)(const void *), int hauteur){
+static void ab_afficher_postfixe(noeud_t * noeud, void (*afficher)(const void *), int hauteur){
 	if(noeud != NULL){
 
 		// Affiche l'enfant de gauche
@@ -145,7 +156,7 @@ static void ab_print_enfant_post(noeud_t * noeud, void (*afficher)(const void *)
 				printf("└");
 
 			printf("── ");
-			ab_print_enfant_post(noeud->gauche, afficher, hauteur + 1);
+			ab_afficher_postfixe(noeud->gauche, afficher, hauteur + 1);
 		}
 
 
@@ -154,13 +165,13 @@ static void ab_print_enfant_post(noeud_t * noeud, void (*afficher)(const void *)
 			printf("\n");
 			affHauteur(hauteur);
 			printf("└── ");
-			ab_print_enfant_post(noeud->droit, afficher, hauteur + 1);
+			ab_afficher_postfixe(noeud->droit, afficher, hauteur + 1);
 		}
 		afficher(noeud->etiquette);
 	}
 }
 
-static void ab_print_enfant_sym(noeud_t * noeud, void (*afficher)(const void *), int hauteur){
+static void ab_afficher_infixe(noeud_t * noeud, void (*afficher)(const void *), int hauteur){
 	if(noeud != NULL){
 		
 
@@ -169,7 +180,7 @@ static void ab_print_enfant_sym(noeud_t * noeud, void (*afficher)(const void *),
 			printf("\n");
 			affHauteur(hauteur);
 			printf("┌── ");
-			ab_print_enfant_sym(noeud->gauche, afficher, hauteur + 1);
+			ab_afficher_infixe(noeud->gauche, afficher, hauteur + 1);
 		}
 		afficher(noeud->etiquette);
 
@@ -178,7 +189,7 @@ static void ab_print_enfant_sym(noeud_t * noeud, void (*afficher)(const void *),
 			printf("\n");
 			affHauteur(hauteur);
 			printf("└── ");
-			ab_print_enfant_sym(noeud->droit, afficher, hauteur + 1);
+			ab_afficher_infixe(noeud->droit, afficher, hauteur + 1);
 		}
 	}
 }
@@ -265,9 +276,7 @@ err_t ab_charger( ab_t ** arbre  ,						/* Arbre Binaire d'elements a charger */
       
       /* Recherche noeud */
       noeud = NULL ; 
-      if( noeud_numero_rechercher( &noeud , 
-				   ab_racine_lire((*arbre)) ,
-				   num_noeud ) )
+      if( noeud_numero_rechercher( &noeud , ab_racine_lire(*arbre) , num_noeud ) )
 	{
 	  /* Noeud existant --> affectation etiquette */
 	  if( ( noerr = noeud_etiquette_ecrire( noeud , etiquette , fonction_affectation ) ) )
@@ -359,6 +368,7 @@ err_t ab_charger( ab_t ** arbre  ,						/* Arbre Binaire d'elements a charger */
 	}
   
     }
+  fonction_destruction(&etiquette);
   /* Fermeture */
   fclose(fd) ; 
   
@@ -470,7 +480,7 @@ err_t ab_sauver( const ab_t * arbre  ,						/* Arbre Binaire d'elements a charge
 static noeud_t * ab_pere_rechercher_noeud(noeud_t * pere, noeud_t * fils){
 	noeud_t * res = NULL;
 	if(pere != NULL && fils != NULL){
-		if(fils == pere->gauche || fils = pere->droit){
+		if(fils == pere->gauche || fils == pere->droit){
 			return pere;
 		}
 		else{
@@ -490,8 +500,8 @@ static noeud_t * ab_pere_rechercher_noeud(noeud_t * pere, noeud_t * fils){
 
 
 extern
-noeud_t * ab_pere_rechercher( const ab_t * arbre , 
-			      const noeud_t * noeud_fils )
+noeud_t * ab_pere_rechercher( ab_t * arbre , 
+			      noeud_t * noeud_fils )
 {
  	return(ab_pere_rechercher_noeud((arbre->racine), noeud_fils));
   

@@ -27,7 +27,7 @@ main(int argc , char * argv[] )
       printf( "usage: %s 2<n> <parcours>\n" , nomprog ) ; 
       printf( "\t n: puissance de 2; n^2 - 1  representera le nombre d'elements de l'arbre\n" ) ; 
       printf( "\t <parcours>: type de parcours dans l'affichage de l'arbre\n" ) ; 
-      printf( "\t            INF  --> Infixe \n" ) ; 
+      printf( "\t            PRE  --> Prefixe \n" ) ; 
       printf( "\t            POST --> Postfixe \n" ) ; 
       printf( "\t            SYM  --> Symetrique \n" ) ; 
       exit(1) ;
@@ -37,14 +37,14 @@ main(int argc , char * argv[] )
   N = powf( 2 , exp_n ) - 1 ; 
 
   ab_parcours_t parcours = UNK  ; 
-  if( ! strcmp( argv[2] , "INF"  ) ) parcours = INFIXE ;
+  if( ! strcmp( argv[2] , "PRE"  ) ) parcours = PREFIXE ;
   if( ! strcmp( argv[2] , "POST" ) ) parcours = POSTFIXE ;
   if( ! strcmp( argv[2] , "SYM"  ) ) parcours = SYMETRIQUE ;
   if( parcours == UNK ) 
     {
       printf( "Parametre <parcours> incorrect (%s)\n" , argv[2] ) ; 
       printf( "\t <parcours>: type de parcours dans l'affichage de l'arbre\n" ) ; 
-      printf( "\t            INF  --> Infixe \n" ) ; 
+      printf( "\t            PRE  --> Prefixe \n" ) ; 
       printf( "\t            POST --> Postfixe \n" ) ; 
       printf( "\t            SYM  --> Symetrique \n" ) ; 
       exit(1) ;
@@ -104,7 +104,7 @@ main(int argc , char * argv[] )
    }
 
   printf( "Test affichage arbre\n" ) ;
-  ab_afficher( arbre , string_afficher_cb ) ; 
+  ab_afficher( arbre , string_afficher_cb, parcours ) ; 
   printf( "\n");
 
   printf( "Test d'existance sur un arbre ab_t existant\n" ) ;
@@ -135,7 +135,7 @@ main(int argc , char * argv[] )
    }
 
   printf( "Affichage arbre charge\n" ) ;
-  ab_afficher( arbre , string_afficher_cb ) ; 
+  ab_afficher( arbre , string_afficher_cb, parcours ) ; 
   printf( "\n");
 
   /*
