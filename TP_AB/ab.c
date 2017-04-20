@@ -148,14 +148,7 @@ static void ab_afficher_postfixe(noeud_t * noeud, void (*afficher)(const void *)
 		// Affiche l'enfant de gauche
 		if(noeud->gauche != NULL){
 			printf("\n");
-			affHauteur(hauteur);
-
-			if(noeud->droit != NULL)
-				printf("├");
-			else
-				printf("└");
-
-			printf("── ");
+			printf("┌── ");
 			ab_afficher_postfixe(noeud->gauche, afficher, hauteur + 1);
 		}
 
@@ -163,10 +156,14 @@ static void ab_afficher_postfixe(noeud_t * noeud, void (*afficher)(const void *)
 		// Affiche l'enfant de droite
 		if(noeud->droit != NULL){
 			printf("\n");
-			affHauteur(hauteur);
-			printf("└── ");
+			if(noeud->gauche != NULL)
+				printf("├── ");
+			else
+				printf("┌── "  );
 			ab_afficher_postfixe(noeud->droit, afficher, hauteur + 1);
 		}
+
+		affHauteur(hauteur);
 		afficher(noeud->etiquette);
 	}
 }

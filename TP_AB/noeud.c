@@ -224,11 +224,9 @@ booleen_t noeud_numero_rechercher( noeud_t ** result ,        /* Resultat: @ du 
 	if(racine != NULL){
 
 		if(racine->numero == numero){
-			*result = racine;;
+			*result = racine;
 			return (VRAI);
 		}
-	
-		// Après avoir recherché à gauche puis à droite, on retourne la valeur renvoyée par soit l'un soit l'autre
 		return noeud_numero_rechercher(result, racine->gauche, numero) || noeud_numero_rechercher(result, racine->droit,  numero);
 	}
 	return (FAUX);
@@ -250,8 +248,6 @@ booleen_t noeud_rechercher( noeud_t ** result ,			 /* Resultat: @ du noeud trouv
 
 		booleen_t gauche = noeud_rechercher(result, racine->gauche, etiquette, comparer);
 		booleen_t droit  = noeud_rechercher(result, racine->droit,  etiquette, comparer);
-
-		// Après avoir recherché à gauche puis à droite, on retourne la valeur renvoyée par soit l'un soit l'autre
 		return gauche || droit;
 	}
 	return (FAUX);

@@ -56,29 +56,30 @@ main(int argc , char * argv[] )
    * Creation variables de travail 
    */
 
-  strings = malloc( sizeof(string_t *) * N+1 )  ; 
+  strings = malloc( sizeof(string_t *) * N )  ; 
 
   char string[128] ;
-  strings[0] = NULL ; 
-  for( i=1 ; i<N+1 ; i++ ) 
+  for( i=0 ; i<N ; i++ ) 
     {
       sprintf( string , "string_%d" , (int)(N-i) ) ; 
       strings[i] = string_creer( string ) ; 
     }
 
-  noeuds = malloc( sizeof(noeud_t *) * N+1 ) ; 
-  noeuds[0] = NULL ; 
-  for( i=1 ; i<N+1 ; i++ )
+  noeuds = malloc( sizeof(noeud_t *) * N ) ; 
+  for( i=0 ; i<N ; i++ )
     {
       noeuds[i]= noeud_creer( i , strings[i] , NULL , NULL , string_referencer_cb ) ; 
     }
 
-  for( i=1 ; i<N+1 ; i++ )
+  for( i=0 ; i<N ; i++ )
     {
-      if( 2*i <= N ) 
+      if( 2*i+1 < N ) 
 	{
-	  noeud_sag_ecrire( noeuds[i] , noeuds[2*i] ) ; 
-	  noeud_sad_ecrire( noeuds[i] , noeuds[(2*i)+1] ) ; 
+	  noeud_sag_ecrire( noeuds[i] , noeuds[2*i+1] ) ; 
+	}
+      if( 2*i+2 < N )
+        {
+	  noeud_sad_ecrire( noeuds[i] , noeuds[2*i+2] ) ; 
 	}
     }
   
@@ -96,7 +97,7 @@ main(int argc , char * argv[] )
  printf( "Rattachement arbre a sa racine\n" ) ;
  if( N > 0 )
    {
-     if( ( noerr = ab_racine_ecrire( arbre , noeuds[1] ) ) )
+     if( ( noerr = ab_racine_ecrire( arbre , noeuds[0] ) ) )
        { 
 	 printf("Sortie avec code erreur = %d\n" , noerr ) ;
 	 return(noerr) ; 
@@ -141,12 +142,20 @@ main(int argc , char * argv[] )
   /*
    * Destructions variables de travail 
    */
-  
-  for( i=1 ; i<N ; i++ ) 
+  printf( "Test destruction arbre charge\n" ) ;
+  if( ( noerr = ab_detruire( &arbre ) ) )
+    { 
+      printf("Sortie avec code erreur = %d\n" , noerr ) ;
+      return(noerr) ; 
+    }
+
+
+  for( i=0 ; i<N ; i++ ) 
     {
       string_detruire( &strings[i] ) ; 
     }
-
+  free(strings);
+  free(noeuds);
   printf( "Fin du programme de test sur les objets de type arbre ab_t\n" ) ; 
 
   return(0) ; 

@@ -55,29 +55,30 @@ main(int argc , char * argv[] )
   /* 
    * Creation variables de travail 
    */
-  fractions = malloc( sizeof(fraction_t *) * N +1 )  ; 
+  fractions = malloc( sizeof(fraction_t *) * N )  ; 
 
-  fractions[0] = NULL ; 
-  for( i=1 ; i<N+1 ; i++ ) 
+  for( i=0 ; i<N ; i++ ) 
     {
       fractions[i] = fraction_creer( N-i , N-i+1 ) ; 
     }
 
-  noeuds = malloc( sizeof(noeud_t *) * N + 1 ) ; 
+  noeuds = malloc( sizeof(noeud_t *) * N ) ; 
   
-  noeuds[0] = NULL ; 
-  for( i=1 ; i<N+1 ; i++ )
+  for( i=0 ; i<N ; i++ )
     {
       noeuds[i]= noeud_creer( i , fractions[i] , NULL , NULL , fraction_referencer_cb ) ; 
     }
 
-  for( i=1 ; i<N+1 ; i++ )
+  for( i=0 ; i<N ; i++ )
     {
-      if( 2*i <= N ) 
+      if( 2*i+1 < N ) 
 	{
-	  noeud_sag_ecrire( noeuds[i] , noeuds[2*i] ) ; 
-	  noeud_sad_ecrire( noeuds[i] , noeuds[(2*i)+1] ) ; 
+	  noeud_sag_ecrire( noeuds[i] , noeuds[2*i+1] ) ; 
 	}
+      if( 2*i+2 < N ) 
+	{
+	  noeud_sad_ecrire( noeuds[i] , noeuds[(2*i)+2] ) ; 
+    	}
     }
   
   /* ----- */
@@ -94,7 +95,7 @@ main(int argc , char * argv[] )
  printf( "Rattachement arbre a sa racine\n" ) ;
  if( N > 0 )
    {
-     if( ( noerr = ab_racine_ecrire( arbre , noeuds[1] ) ) )
+     if( ( noerr = ab_racine_ecrire( arbre , noeuds[0] ) ) )
        { 
 	 printf("Sortie avec code erreur = %d\n" , noerr ) ;
 	 return(noerr) ; 
@@ -141,7 +142,7 @@ main(int argc , char * argv[] )
 
   ab_detruire(&arbre);
 
-  for(i = 1 ; i < N ; i++){
+  for(i = 0 ; i < N ; i++){
 	  fraction_detruire_cb(&(fractions[i]));
   }
 
