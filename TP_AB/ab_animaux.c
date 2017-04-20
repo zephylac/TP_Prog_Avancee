@@ -57,7 +57,6 @@ void ab_animaux_reconnaitre( ab_t * arbre ,
 			     err_t (*fonction_affectation)(void * , void *) ,
 			     void (*fonction_affichage)(const void *)) 
 {
-	char reponse[3];
 	char chaine[50];
 	char chaine2[50];
 
@@ -65,6 +64,7 @@ void ab_animaux_reconnaitre( ab_t * arbre ,
 	string_t * ques;
 	noeud_t * noeud2;
 	int taille;
+	booleen_t test = FAUX;
 
 	if(noeud == NULL){
 		noeud_afficher(pere,string_string_afficher_cb);
@@ -94,17 +94,12 @@ void ab_animaux_reconnaitre( ab_t * arbre ,
 	else{
 
 		noeud_afficher(noeud,string_string_afficher_cb);
-		printf("\nRéponse : ");
-		scanf("%s",reponse);
-
-		/*while((strcmp("oui",reponse)) != 0 && (strcmp("non",reponse)) != 0){
-			printf("Réponse : oui/non\n");
-			scanf("%s",reponse);
-		}*/
-		if(strcmp("oui",reponse) == 0){
+		printf("\n");
+		test = OuiNon_saisir("Reponse : ") ;       
+		if(test){
 			ab_animaux_reconnaitre(arbre,noeud->gauche,noeud,fonction_affectation,string_string_afficher_cb);
 		}
-		if(strcmp("non",reponse) == 0){
+		else{
 			ab_animaux_reconnaitre(arbre,noeud->droit,noeud,fonction_affectation,string_string_afficher_cb);
 		}
 	}

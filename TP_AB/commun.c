@@ -54,7 +54,7 @@ booleen_t OuiNon_saisir( char * message )
   getchar() ;
   while( strchr( "ONonYy", rep[0] ) == NULL )
     {
-      printf( "Reponse [ONonYy] : ") ; fflush(stdout) ; 
+      printf( "Reponse 'oui'/'non' : ") ; fflush(stdout) ; 
       scanf("%s" , rep ) ; 
       getchar();
     }
