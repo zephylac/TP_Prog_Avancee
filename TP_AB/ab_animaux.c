@@ -1,5 +1,6 @@
 #include <ab_animaux.h>
 #include <string.h>
+#define MAX_NAME_SZ 256
 /*
  * Affichage 
  */
@@ -57,26 +58,43 @@ void ab_animaux_reconnaitre( ab_t * arbre ,
 			     err_t (*fonction_affectation)(void * , void *) ,
 			     void (*fonction_affichage)(const void *)) 
 {
-	char chaine[50];
-	char chaine2[50];
+	char *name = malloc (MAX_NAME_SZ);
+	char *name1 = malloc (MAX_NAME_SZ);
 
 	string_t * rep;
 	string_t * ques;
 	noeud_t * noeud2;
 	int taille;
 	booleen_t test = FAUX;
+	
+	if (name == NULL || name1 == NULL) {
+        printf ("No memory\n");
+        return ;
+    	}
+
 
 	if(noeud == NULL){
 		noeud_afficher(pere,string_string_afficher_cb);
 		printf("Je donne ma langue au chat.\nQuelle est la réponse ? ");
-		scanf("%s",chaine);
-		rep = string_creer(chaine);
+		fgets (name, MAX_NAME_SZ, stdin);
+
+    		if ((strlen(name)>0) && (name[strlen (name) - 1] == '\n'))
+        		name[strlen (name) - 1] = '\0';
 		
-		printf("Donnez une question dont la réponse est oui pour \"%s\" et non pour \"",chaine);
+		rep = string_creer(name);
+
+		printf("Donnez une question dont la réponse est oui pour \"%s\" et non pour \"",name);
 		noeud_afficher(pere,fonction_affichage);
 		printf("\" : ");
-		scanf("%s",chaine2);
-		ques = string_creer(chaine2);
+		
+		free (name);
+		fgets (name1, MAX_NAME_SZ, stdin);
+
+    		if ((strlen(name1)>0) && (name1[strlen (name1) - 1] == '\n'))
+        		name1[strlen (name1) - 1] = '\0';
+		
+		ques = string_creer(name1);
+		free (name1);
 
 		taille = ab_taille_lire(arbre);
 		noeud2 = noeud_creer(taille + 1,pere->etiquette,NULL,NULL,string_copier_cb);
@@ -97,8 +115,15 @@ void ab_animaux_reconnaitre( ab_t * arbre ,
 		printf("\n");
 		test = OuiNon_saisir("Reponse : ") ;       
 		if(test){
-			ab_animaux_reconnaitre(arbre,noeud->gauche,noeud,fonction_affectation,string_string_afficher_cb);
-		}
+			if(noeud->gauche == NULL){
+				printf("J'ai trouvee, programme fini\n");
+				return ;
+			}
+			else{
+				ab_animaux_reconnaitre(arbre,noeud->gauche,noeud,fonction_affectation,string_string_afficher_cb);
+		
+			}
+		}	
 		else{
 			ab_animaux_reconnaitre(arbre,noeud->droit,noeud,fonction_affectation,string_string_afficher_cb);
 		}
