@@ -226,12 +226,12 @@ err_t liste_trier( liste_t * liste , int (*comparer)( const void * , const void 
     case QUICK : 
       qsort( liste->liste , (size_t)liste->nb , sizeof(void *) , comparer ) ;
       break ;
-    case MERGE : 
+    /*case MERGE : 
       mergesort( liste->liste , (size_t)liste->nb , sizeof(void *) , comparer ) ;
       break ; 
     case HEAP : 
       heapsort( liste->liste , (size_t)liste->nb , sizeof(void *) , comparer ) ; 
-      break ; 
+      break ; */
     default :
       /* 
        * Pas de parametre en surnombre ou type incorrect

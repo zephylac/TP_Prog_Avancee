@@ -103,102 +103,132 @@ err_t ab_detruire( ab_t ** arbre )
  * - postfixe
  * - symetrique 
  */
-
-
-// Print a givent amount of space (for drawing the tree)
-void affHauteur(int hauteur){
-	int i;
-	for(i = 0 ; i < hauteur ; i++)
-		printf("│   ");
-}
-
-// Affiche le noeud et ses enfants
-static void ab_afficher_prefixe(noeud_t * noeud, void (*afficher)(const void *), int hauteur){
-	if(noeud != NULL){
-		afficher(noeud->etiquette);
-
-		// Affiche l'enfant de gauche
-		if(noeud->gauche != NULL){
-			printf("\n");
-			affHauteur(hauteur);
-
-			if(noeud->droit != NULL)
-				printf("├");
-			else
-				printf("└");
-
-			printf("── ");
-			ab_afficher_prefixe(noeud->gauche, afficher, hauteur + 1);
-		}
-
-
-		// Affiche l'enfant de droite
-		if(noeud->droit != NULL){
-			printf("\n");
-			affHauteur(hauteur);
-			printf("└── ");
-			ab_afficher_prefixe(noeud->droit, afficher, hauteur + 1);
-		}
+static void affHauteur(int hauteur, booleen_t aUnGauche){
+    int i;
+    static booleen_t first = VRAI;
+    static booleen_t * tab;
+    if (first) {
+        first = FAUX;
+        tab = malloc(hauteur * sizeof(booleen_t));
+        for (i = 0; i < hauteur; i++) tab[i] = FAUX;
+    }
+    for(i = 0 ; i < hauteur-1 ; i++) {
+        if (tab[i])printf("|   ");
+        else printf("    ");
+    }
+    if (hauteur!=0) {
+        if (aUnGauche){
+	    printf ("└── ");
+            tab[hauteur-1] = FAUX;
+    	}
+	else {
+            printf ("├── ");
+            tab[hauteur-1] = VRAI;
 	}
+    }
+    else {
+        free(tab);
+        first = VRAI;
+    }
 }
 
-static void ab_afficher_postfixe(noeud_t * noeud, void (*afficher)(const void *), int hauteur){
-	if(noeud != NULL){
+static void ab_afficher_prefixe (noeud_t * noeud, void (*afficher) (const void *), int hauteur, int aUnGauche)
+{
+    if (noeud == NULL) return;
 
-		// Affiche l'enfant de gauche
-		if(noeud->gauche != NULL){
-			printf("\n");
-			printf("┌── ");
-			ab_afficher_postfixe(noeud->gauche, afficher, hauteur + 1);
-		}
+    affHauteur(hauteur, aUnGauche);
+    afficher (noeud->etiquette);
+    printf ("\n");
+    ab_afficher_prefixe (noeud->gauche, afficher, hauteur + 1, FAUX);
+    ab_afficher_prefixe (noeud->droit, afficher, hauteur + 1, noeud->gauche != NULL);
+}
 
+static void affHauteur1(int hauteur, booleen_t aUnGauche){
+    int i;
+    static booleen_t first = VRAI;
+    static booleen_t * tab;
+    if (first) {
+        first = FAUX;
+        tab = malloc(hauteur * sizeof(booleen_t));
+        for (i = 0; i < hauteur; i++) tab[i] = FAUX;
+    }
+    for(i = 0 ; i < hauteur-1 ; i++) {
+        if (tab[i])printf("|   ");
+        else printf("    ");
+    }
+    if (hauteur!=0) {
+        if (aUnGauche) printf ("├── ");
+        else {
+            printf ("┌── ");
+            tab[hauteur-1] = VRAI;
+        }
+    }
+    else {
+        free(tab);
+        first = VRAI;
+    }
+}
 
-		// Affiche l'enfant de droite
-		if(noeud->droit != NULL){
-			printf("\n");
-			if(noeud->gauche != NULL)
-				printf("├── ");
-			else
-				printf("┌── "  );
-			ab_afficher_postfixe(noeud->droit, afficher, hauteur + 1);
-		}
+static void ab_afficher_postfixe (noeud_t * noeud, void (*afficher) (const void *), int hauteur, int aUnGauche)
+{
+    if (noeud == NULL) return;
 
-		affHauteur(hauteur);
-		afficher(noeud->etiquette);
+    ab_afficher_postfixe (noeud->gauche, afficher, hauteur + 1, FAUX);
+    ab_afficher_postfixe (noeud->droit, afficher, hauteur + 1, noeud->gauche != NULL);
+    affHauteur1(hauteur, aUnGauche);
+    afficher (noeud->etiquette);
+    printf ("\n");
+}
+
+static void affHauteur2(int hauteur, booleen_t aUnGauche){
+    int i;
+    static booleen_t first = VRAI;
+    static booleen_t * tab;
+    if (first) {
+        first = FAUX;
+        tab = malloc(hauteur * sizeof(booleen_t));
+        for (i = 0; i < hauteur; i++) tab[i] = VRAI;
+    }
+    for(i = 0 ; i < hauteur-1 ; i++) {
+        if (tab[i])printf("|   ");
+        else printf("    ");
+    }
+    if (hauteur!=0) {
+        if (aUnGauche){
+		printf ("└── ");
+		tab[hauteur-1] = FAUX;
+
 	}
+        else {
+            printf ("┌── ");
+            tab[hauteur-1] = VRAI;
+        }
+    }
+    else {
+        free(tab);
+        first = VRAI;
+    }
 }
 
-static void ab_afficher_infixe(noeud_t * noeud, void (*afficher)(const void *), int hauteur){
-	if(noeud != NULL){
-		
+static void ab_afficher_infixe (noeud_t * noeud, void (*afficher) (const void *), int hauteur, int aUnGauche)
+{
+    if (noeud == NULL) return;
 
-		// Affiche l'enfant de gauche
-		if(noeud->gauche != NULL){
-			printf("\n");
-			affHauteur(hauteur);
-			printf("┌── ");
-			ab_afficher_infixe(noeud->gauche, afficher, hauteur + 1);
-		}
-		afficher(noeud->etiquette);
-
-		// Affiche l'enfant de droite
-		if(noeud->droit != NULL){
-			printf("\n");
-			affHauteur(hauteur);
-			printf("└── ");
-			ab_afficher_infixe(noeud->droit, afficher, hauteur + 1);
-		}
-	}
+    ab_afficher_infixe (noeud->gauche, afficher, hauteur + 1, FAUX);
+    affHauteur2(hauteur, aUnGauche);
+    afficher (noeud->etiquette);
+    printf ("\n");
+    ab_afficher_infixe (noeud->droit, afficher, hauteur + 1, noeud->gauche != NULL);
 }
 
- extern 
+extern 
 void ab_afficher( const ab_t * arbre , void (*fonction_affichage)(const void *), ab_parcours_t parcours)
 {
 	switch(parcours){
-		case PREFIXE: ab_afficher_prefixe(arbre->racine, fonction_affichage, 0);  break;
-		case POSTFIXE: ab_afficher_postfixe(arbre->racine, fonction_affichage, 0); break;
-		case SYMETRIQUE: ab_afficher_infixe(arbre->racine, fonction_affichage, 0);   break;
-		default: ab_afficher_prefixe(arbre->racine, fonction_affichage, 0);  break;
+		case PREFIXE: ab_afficher_prefixe(arbre->racine, fonction_affichage, 0, 0 );  break;
+		case POSTFIXE: ab_afficher_postfixe(arbre->racine, fonction_affichage, 0, 0); break;
+		case SYMETRIQUE: ab_afficher_infixe(arbre->racine, fonction_affichage, 0, 0); break;
+		default: ab_afficher_prefixe(arbre->racine, fonction_affichage, 0, 0);  break;
 	}
 }
 
