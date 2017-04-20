@@ -72,10 +72,10 @@ bool noeud_est_pere(arbre * a){
 }
 
 // Cree un noeud
-arbre * noeud_creer(int numero, void * etiquette, tree* pere, tree * gauche, tree * droite){
+arbre * noeud_creer(int numero, void * etiquette, arbre * pere, arbre * gauche, arbre * droite){
 	arbre * a = malloc(sizeof(arbre));
 
-	a->numero 		= numero;
+	a->numero 	= numero;
 	a->etiquette  	= etiquette;
 	a->pere 	= pere;
 	a->gauche 	= gauche;
@@ -215,6 +215,54 @@ void ab_print_enfant(arbre * a, void (*etiquettePrint)(void *), int depth){
 			printf("└── ");
 			ab_print_enfant(a->droite, etiquettePrint, depth + 1);
 		}
+	}
+}
+
+//Lit la racine de l'arbre
+arbre * ab_racine_lire(arbre * a){
+	if(a->pere != NULL){
+		ab_racine_lire(a->pere);
+	}
+	else{
+		return(a);
+	}
+}
+
+//Ecrit la racine de l'arbre
+arbre * ab_racine_ecrire(void * etiquette, arbre * gauche, arbre * droite){
+	arbre * a = malloc(sizeof(arbre));
+
+	a->numero 	= 0;
+	a->etiquette  	= etiquette;
+	a->pere 	= NULL;
+	a->gauche 	= gauche;
+	a->droite  	= droite;
+
+	return a;
+}
+
+//Lit la taille d'un arbre
+ab_taille_lire(arbre * a){
+	if(a->gauche == NULL && a->droite == NULL){
+		return 0;
+	}
+	else{
+		return 1 + ab_taille_lire(a->gauche) + ab_taille_lire(a->droite)
+	}
+}
+
+//Retourne vrai si l'arbre existe
+bool ab_existe(arbre * a){
+	return a != NULL;
+}
+
+bool ab_vide(arbre * a){
+	a = ab_racine_lire(a);
+	if(a->gauche == NULL && a->droite == NULL){
+		return 0;
+	}
+	else{
+		return 1;
 	}
 }
 

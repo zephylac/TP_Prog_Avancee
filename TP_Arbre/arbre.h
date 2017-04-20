@@ -59,10 +59,10 @@ bool noeud_feuille(arbre * a);
 bool noeud_est_pere(arbre * a);
 
 // Cree un noeud
-arbre * noeud_creer(int numero, void * etiquette, tree* pere, tree * gauche, tree * droite);
+arbre * noeud_creer(int numero, void * etiquette, arbre * pere, arbre * gauche, arbre * droite);
 
 //Affiche un noeud
-void noeud_afficher(arbre * a, void (*etiquettePrint)(void *),);
+void noeud_afficher(arbre * a, void (*etiquettePrint)(void *));
 
 
 // Detruit un noeud
@@ -86,6 +86,20 @@ void ab_print_enfant(arbre * a, void (*etiquettePrint)(void *), int depth);
 // Affiche l'arbre
 void ab_afficher(arbre * a, void (*etiquettePrint)(void *));
 
+//Lit la racine de l'arbre
+arbre * ab_racine_lire(arbre * a);
+
+//Ecrit la racine de l'arbre
+arbre * ab_racine_ecrire(void * etiquette, arbre * gauche, arbre * droite);
+
+//Lit la taille d'un arbre
+int ab_taille_lire(arbre * a);
+	
+//Retourne vrai si l'arbre existe
+bool ab_existe(arbre * a);
+
+//Retourn vrai si l'arbre vrai	
+bool ab_vide(arbre * a);
 
 /* ---------------------------------------- */
 /* FUNCTIONS FOR PRINTING SOME LABELS TYPES */
