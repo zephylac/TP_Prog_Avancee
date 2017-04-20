@@ -169,7 +169,7 @@ void noeud_afficher( const noeud_t * noeud ,
 		     void (*afficher)(const void *) ) 
 {
   if(noeud != NULL){
-		printf("Numero    : %i\n",noeud->numero);
+		/*printf("Numero    : %i\n",noeud->numero);*/
 		afficher(noeud->etiquette);
   }
 }
