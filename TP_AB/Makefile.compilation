@@ -2,8 +2,8 @@
 # Option compilation 
 #
 
- CCOBJ=gcc -c
- CCLNK=gcc 
+ CCOBJ=gcc -c -std=gnu99 -lm
+ CCLNK=gcc -std=gnu99 -lm
 
 # Valeurs possibles : yes , no  
 DEBUG=yes

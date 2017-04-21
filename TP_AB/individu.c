@@ -232,7 +232,7 @@ err_t individu_copier_cb( void * ind_cible ,  void * ind_source )
 
 extern
 err_t individu_charger( individu_t ** individu  , 
-			FILE * restrict fd )
+			FILE * fd )
 {
   char nom[MAX_STRING] ;
   char prenom[MAX_STRING] ;
@@ -256,7 +256,7 @@ err_t individu_charger( individu_t ** individu  ,
 
 extern
 err_t individu_charger_cb( void * individu  , 
-			   FILE * restrict fd )
+			   FILE * fd )
 {
   return(individu_charger( individu , fd ) ) ;
 }
@@ -268,7 +268,7 @@ err_t individu_charger_cb( void * individu  ,
 
 extern
 err_t individu_sauver( individu_t * individu , 
-		       FILE * restrict fd )
+		       FILE * fd )
 {
   if( ! individu_existe( individu ) )
     return(OK) ;
@@ -280,7 +280,7 @@ err_t individu_sauver( individu_t * individu ,
 
 extern
 err_t individu_sauver_cb( void * individu , 
-			  FILE * restrict fd )
+			  FILE * fd )
 {
   return(individu_sauver( individu , fd ) ) ; 
 }

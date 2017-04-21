@@ -60,21 +60,17 @@ extern err_t individu_copier_cb( void * ind_cible ,  void * ind_source ) ;
  *           ERR_SCANF : pb lecture individu dans le fichier
  *           ERR_DEB_MEMOIRE : debordement memoire lors de la creation de l'individu
  */
-extern err_t individu_charger( individu_t ** individu  , 
-			       FILE * restrict fd) ;
+extern err_t individu_charger( individu_t ** individu  , FILE * fd) ;
 
-extern err_t individu_charger_cb( void * individu  , 
-				  FILE * restrict fd ) ;
+extern err_t individu_charger_cb( void * individu  , FILE * fd ); 
 
 /*
  * Sauvegarde d'un individu dans un fichier 
  */
 
-extern err_t individu_sauver( individu_t * individu  , 
-			      FILE * restrict fd ) ;
+extern err_t individu_sauver( individu_t * individu  , FILE * fd ) ;
 
-extern err_t individu_sauver_cb( void * individu , 
-				 FILE * restrict fd ) ;
+extern err_t individu_sauver_cb( void * individu , FILE * fd ) ;
 
 
 

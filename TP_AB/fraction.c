@@ -207,7 +207,7 @@ err_t fraction_copier_cb( void * frac_cible ,  void * frac_source )
 
 extern
 err_t fraction_charger( fraction_t ** fraction ,
-			FILE * restrict fd )
+			FILE * fd )
 {
   int numerateur ; 
   int denominateur ;
@@ -231,7 +231,7 @@ err_t fraction_charger( fraction_t ** fraction ,
 
 extern
 err_t fraction_charger_cb( void * fraction ,
-			   FILE * restrict fd )
+			   FILE * fd )
 {
   return(fraction_charger( fraction , fd ) ) ;
 }
@@ -242,7 +242,7 @@ err_t fraction_charger_cb( void * fraction ,
 
 extern
 err_t fraction_sauver( fraction_t * fraction  , 
-		       FILE * restrict fd )
+		       FILE * fd )
 {
   if( ! fraction_existe( fraction ) )
     return(OK) ;
@@ -254,7 +254,7 @@ err_t fraction_sauver( fraction_t * fraction  ,
 
 extern
 err_t fraction_sauver_cb( void * fraction , 
-			  FILE * restrict fd )
+			  FILE * fd )
 {
   return( fraction_sauver( fraction  , fd ) ) ; 
 }

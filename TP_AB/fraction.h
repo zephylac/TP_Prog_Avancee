@@ -55,17 +55,18 @@ extern err_t fraction_copier_cb( void * frac_cible ,  void * frac_source ) ;
  *           ERR_DEB_MEMOIRE : debordement memoire lors de la creation de la fraction
  */
 extern err_t fraction_charger( fraction_t ** fraction , 
-			       FILE * restrict fd ) ;
+			       FILE * fd ) ;
 
 extern err_t fraction_charger_cb( void * fraction ,
-				  FILE * restrict fd ) ;
+				  FILE * fd ) ;
 
 /*
  * Sauvegarde d'une fraction dans un fichier 
  */
 extern err_t fraction_sauver( fraction_t * fraction  , 
-			      FILE * restrict fd) ;
+			      FILE * fd) ;
 
 extern err_t fraction_sauver_cb( void * fraction , 
-				 FILE * restrict fd ) ;
+				 FILE * fd) ;
+
 #endif

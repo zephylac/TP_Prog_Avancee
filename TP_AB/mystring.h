@@ -60,19 +60,19 @@ extern err_t string_copier_cb( void * str_cible ,  void * str_source ) ;
  *           ERR_DEB_MEMOIRE : debordement memoire lors de la creation de la string
  */
 extern err_t string_charger( string_t ** string , 
-			     FILE * restrict fd ) ;
+			     FILE * fd ) ;
 
 extern err_t string_charger_cb( void * string , 
-				FILE * restrict fd ) ; 
+				FILE * fd ) ; 
 /*
  * Sauvegarde d'une string dans un fichier 
  */
 
 extern err_t string_sauver( string_t * string , 
-			    FILE * restrict fd ) ;
+			    FILE * fd ) ;
 
 extern err_t string_sauver_cb( void * string , 
-			       FILE * restrict fd ) ; 
+			       FILE * fd ) ; 
 
 /*
  * Saisie d'une strig au clavier (entree standard)

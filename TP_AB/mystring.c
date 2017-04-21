@@ -249,7 +249,7 @@ err_t string_copier_cb( void * str_cible ,  void * str_source )
 
 extern
 err_t string_charger( string_t ** string , 
-		      FILE * restrict fd )
+		      FILE * fd )
 {
   char w_string[MAX_STRING] ;
   err_t noerr = OK ; 
@@ -282,7 +282,7 @@ err_t string_charger( string_t ** string ,
 
 extern
 err_t string_charger_cb( void * string , 
-			 FILE * restrict fd )
+			 FILE * fd )
 {
   return(string_charger( string , fd ) ) ; 
 } 
@@ -294,7 +294,7 @@ err_t string_charger_cb( void * string ,
 
 extern
 err_t string_sauver( string_t * string , 
-		     FILE * restrict fd )
+		     FILE * fd )
 {
   if( ! string_existe( string ) )
     return(OK) ;
@@ -313,7 +313,7 @@ err_t string_sauver( string_t * string ,
 
 extern
 err_t string_sauver_cb( void * string , 
-			FILE * restrict fd )
+			FILE * fd )
 {
   return( string_sauver( string , fd ) ) ;
 }
