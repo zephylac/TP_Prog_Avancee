@@ -146,6 +146,10 @@ void affHauteur (
     }
 }
 
+void resetAffHauteur () {
+	    affHauteur(0,0,NULL,NULL,NULL,NULL,VRAI);
+}
+
 static void ab_afficher_prefixe (noeud_t * noeud, void (*afficher) (const void *), int hauteur, int aUnGauche)
 {
     if (noeud == NULL) return;
@@ -190,6 +194,7 @@ void ab_afficher( const ab_t * arbre , void (*fonction_affichage)(const void *),
 		case SYMETRIQUE: ab_afficher_infixe(arbre->racine, fonction_affichage, 0, 0); break;
 		default: ab_afficher_prefixe(arbre->racine, fonction_affichage, 0, 0);  break;
 	}
+	resetAffHauteur();
 }
 
 /*

@@ -58,22 +58,23 @@ void ab_animaux_reconnaitre( ab_t * arbre ,
 			     err_t (*fonction_affectation)(void * , void *) ,
 			     void (*fonction_affichage)(const void *)) 
 {
-	char *name = malloc (MAX_NAME_SZ);
-	char *name1 = malloc (MAX_NAME_SZ);
-
-	string_t * rep;
-	string_t * ques;
+	
+	string_t * rep = NULL;
+	string_t * ques = NULL;
 	noeud_t * noeud2;
 	int taille;
 	booleen_t test = FAUX;
 	
-	if (name == NULL || name1 == NULL) {
-        printf ("No memory\n");
-        return ;
-    	}
-
 
 	if(noeud == NULL){
+		char *name = malloc (MAX_NAME_SZ);
+		char *name1 = malloc (MAX_NAME_SZ);
+
+		if (name == NULL || name1 == NULL) {
+        		printf ("No memory\n");
+        		return ;
+    		}
+
 		noeud_afficher(pere,string_string_afficher_cb);
 		printf("Je donne ma langue au chat.\nQuelle est la réponse ? ");
 		fgets (name, MAX_NAME_SZ, stdin);
@@ -87,27 +88,27 @@ void ab_animaux_reconnaitre( ab_t * arbre ,
 		noeud_afficher(pere,fonction_affichage);
 		printf("\" : ");
 		
-		free (name);
 		fgets (name1, MAX_NAME_SZ, stdin);
 
     		if ((strlen(name1)>0) && (name1[strlen (name1) - 1] == '\n'))
         		name1[strlen (name1) - 1] = '\0';
 		
 		ques = string_creer(name1);
-		free (name1);
 
 		taille = ab_taille_lire(arbre);
 		noeud2 = noeud_creer(taille + 1,pere->etiquette,NULL,NULL,string_copier_cb);
 		ab_taille_incrementer(arbre);
 		noeud_sad_ecrire(pere,noeud2);
-		
 		noeud_etiquette_ecrire(pere, ques, string_copier_cb);
+	        if(ques != NULL) string_detruire(&ques);	
+		free (name);
 
 		taille = ab_taille_lire(arbre);
 		noeud2 = noeud_creer(taille + 1,rep,NULL,NULL, string_copier_cb);
 		ab_taille_incrementer(arbre);
 		noeud_sag_ecrire(pere,noeud2);
-
+		if(rep != NULL) string_detruire(&rep);
+		free (name1);
 	}
 	else{
 

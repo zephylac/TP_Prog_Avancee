@@ -67,7 +67,7 @@ main( int argc  , char * argv[] )
 	  return(noerr) ; 
 	}
     }
-  
+  ab_detruire(&arbre);  
   printf( "----- Fin %s -----\n" , nomprog ) ; 
 
   return(0) ; 
