@@ -84,4 +84,17 @@ extern  err_t ab_sauver( const ab_t * arbre  ,						/* Arbre Binaire d'elements 
 extern noeud_t * ab_pere_rechercher( ab_t * arbre , 
 				     noeud_t * noeud_fils ) ;
 
+
+
+extern void affHauteur (
+    int hauteur,
+    booleen_t leftMost,
+    char * left,
+    char * right,
+    char * between,
+    char * empty,
+    booleen_t reset
+);
+
+extern void resetAffHauteur ();
 #endif

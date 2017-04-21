@@ -105,7 +105,7 @@ err_t ab_detruire( ab_t ** arbre )
  */
 
 #define MAX_HAUTEUR 100
-void affHauteur (
+extern void affHauteur (
     int hauteur,
     booleen_t leftMost,
     char * left,
@@ -116,19 +116,18 @@ void affHauteur (
 ) {
     int i;
     static booleen_t first = VRAI;
-    static booleen_t * tab;
-    //static int size;
+    static booleen_t * tab = NULL;
 
     if (reset) {
-        free(tab);
         first = VRAI;
-    	return ;
+        free(tab);
+    	tab = NULL;
+	return ;
     }
     if (first) {
         first = FAUX;
-        int size = hauteur != 0 ? hauteur : MAX_HAUTEUR;
-        tab = malloc(size * sizeof(booleen_t));
-        for (i = 0; i < size; i++) tab[i] = FAUX;
+        tab = malloc(MAX_HAUTEUR * sizeof(booleen_t));
+        for (i = 0; i < MAX_HAUTEUR; i++) tab[i] = FAUX;
     }
     for(i = 0 ; i < hauteur-1 ; i++) {
         if (tab[i])printf("%s", between);
@@ -146,7 +145,7 @@ void affHauteur (
     }
 }
 
-void resetAffHauteur () {
+extern void resetAffHauteur () {
 	    affHauteur(0,0,NULL,NULL,NULL,NULL,VRAI);
 }
 
