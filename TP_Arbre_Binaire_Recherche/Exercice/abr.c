@@ -87,21 +87,21 @@ abr_t * abr_creer( err_t (*fonction_affectation)( void * e1 , void * e2 ) ,	/*!<
  * Destruction 
  */
 
-static err_t ab_detruire_bis( noeud_t ** noeud, err_t (*detruire) (void *)){    
+static err_t abr_detruire_bis( noeud_t ** noeud, err_t (*detruire) (void *)){    
         if(*noeud == NULL){                                                     
                 return(OK);                                                     
         }                                                                       
-        ab_detruire_bis(&((*noeud)->gauche),detruire);                          
-        ab_detruire_bis(&((*noeud)->droit),detruire);                           
+        abr_detruire_bis(&((*noeud)->gauche),detruire);                          
+        abr_detruire_bis(&((*noeud)->droit),detruire);                           
         noeud_detruire(noeud,detruire);                                         
         return(OK);                                                             
 }                                                                               
                                                                                 
 extern                                                                          
-err_t ab_detruire( abr_t ** arbre )                                              
+err_t abr_detruire( abr_t ** arbre )                                              
 {                                                                               
   if(*arbre != NULL){                                                           
-          ab_detruire_bis(&((*arbre)->racine),(*arbre)->detruire);              
+          abr_detruire_bis(&((*arbre)->racine),(*arbre)->detruire);              
           free(*arbre);                                                         
           (*arbre) = NULL;                                                      
   }                                                                             
