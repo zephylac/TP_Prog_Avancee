@@ -153,7 +153,19 @@ void noeud_afficher( const noeud_t * noeud ,
                 afficher(noeud->etiquette);                                     
   }                                                                             
 }                                                                               
-
+/*
+ * Recherche noeud min/max
+ */
+noeud_t * noeud__min_max(noeud_t * noeud){
+	if(noeud->droit == NULL){
+		return noeud;
+	}
+	else{
+		return(noeud_min_max(noeud->droit));
+	}
+	return NULL;
+}
+	
 /*
  * Sauvegarde dans un fichier 
  */
