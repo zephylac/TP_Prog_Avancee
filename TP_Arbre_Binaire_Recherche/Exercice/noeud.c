@@ -250,8 +250,36 @@ booleen_t noeud_supprimer( void * etiquette ,			 /* valeur a supprimer de l'arbr
         return(OK);                                                                
   }                                                                                
   int cmp = comparer(etiquette, (*racine)->etiquette);                                     
-  if(cmp ==0){                                                                     
-        return (noeud_detruire(racine,detruire));                                 
+  if(cmp ==0){
+	 int nbFils = noeud_nb_fils(*racine);
+         if(nbFils == 0)
+         	return noeud_detruire(racine, detruire);
+
+         if(nbFils == 1){
+
+                noeud_t * tmp = (*racine)->gauche;
+                if(tmp == NULL)
+                	tmp = (*racine)->droit;
+                if(tmp == NULL)
+                        printf("Erreur, y'a une erreur.\n");
+
+                noeud_t * tmp2 = *racine;
+                (*racine)->gauche = NULL;
+                (*racine)->droit  = NULL;
+                noeud_detruire(&tmp2, detruire);
+                *racine = tmp;
+                return true;
+         }
+         if(nbFils == 2){
+	         noeud_t * max = noeud__min_max((*racine)->gauche);
+                 void * tmp = (*racine)->etiquette;
+                 (*racine)->etiquette = max->etiquette;
+                 max->etiquette = tmp;
+                 
+		 
+		 return true;
+         }
+	return false;                                
   }                                                                                
   if(cmp < 0)                                                                      
   {                                                                                
