@@ -88,7 +88,7 @@ abr_t * abr_creer( err_t (*fonction_affectation)( void * e1 , void * e2 ) ,	/*!<
  */
 
 static err_t abr_detruire_bis( noeud_t ** noeud, err_t (*detruire) (void *)){    
-        if(*noeud == NULL){                                                     
+        if((*noeud) == NULL){                                                     
                 return(OK);                                                     
         }                                                                       
         abr_detruire_bis(&((*noeud)->gauche),detruire);                          

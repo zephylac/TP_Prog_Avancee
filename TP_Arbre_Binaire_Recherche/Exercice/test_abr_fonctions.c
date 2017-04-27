@@ -43,27 +43,28 @@ main(int argc , char * argv[] )
 
   char prenom[128] ;
   char nom[128] ; 
-  individus[0] = NULL ;
-  for( i=1 ; i<N+1 ; i++ ) 
+  for( i=0 ; i<N ; i++ ) 
     {
       sprintf( nom , "nom_%d" , (int)N-i ) ;
       sprintf( prenom , "prenom_%d" , (int)N-i ) ;
       individus[i] = individu_creer( prenom , nom ) ; 
     }
 
-  noeuds = malloc( sizeof(noeud_t *) * N+1 ) ; 
-  noeuds[0] = NULL ; 
-  for( i=1 ; i<N+1 ; i++ )
+  noeuds = malloc( sizeof(noeud_t *) * N ) ; 
+  for( i=0 ; i<N ; i++ )
     {
       noeuds[i]= noeud_creer( individus[i] , NULL , NULL , individu_referencer_cb ) ; 
     }
 
-  for( i=1 ; i<N+1 ; i++ )
+  for( i=0 ; i<N ; i++ )
     {
-      if( 2*i <= N ) 
+      if( 2*i+1 < N ) 
 	{
-	  noeud_sag_ecrire( noeuds[i] , noeuds[2*i] ) ; 
-	  noeud_sad_ecrire( noeuds[i] , noeuds[(2*i)+1] ) ; 
+	  noeud_sag_ecrire( noeuds[i] , noeuds[2*i+1] ) ; 
+	}
+      if( 2*i+2 < N) 
+        {
+	  noeud_sad_ecrire( noeuds[i] , noeuds[2*i+2] ) ; 
 	}
     }
   
@@ -77,7 +78,7 @@ main(int argc , char * argv[] )
    } 
  if( N > 0 )
    {
-     if( ( noerr = abr_racine_ecrire( arbre , noeuds[1] ) ) )
+     if( ( noerr = abr_racine_ecrire( arbre , noeuds[0] ) ) )
        { 
 	 printf("Sortie avec code erreur = %d\n" , noerr ) ;
 	 return(noerr) ; 
@@ -89,7 +90,7 @@ main(int argc , char * argv[] )
 
   /* ------ */
 
-  for( i=1 ; i<N+1 ; i++ )
+  for( i=0 ; i<N ; i++ )
     {
       printf("\n--------\nAffichage ancetres du noeud ") ;
       noeud_afficher( noeuds[i] , 
@@ -109,12 +110,13 @@ main(int argc , char * argv[] )
       return(noerr) ; 
     }
   
-  for( i=1 ; i<N+1 ; i++ ) 
+  for( i=0 ; i<N ; i++ ) 
     {
-      individu_detruire( &individus[i] ) ; 
+      individu_detruire( &individus[i]  ) ; 
     }
 
   printf( "Fin du programme de test sur les objets de type arbre abr_t\n" ) ; 
-
+  free(individus);
+  free(noeuds);
   return(0) ; 
 }
