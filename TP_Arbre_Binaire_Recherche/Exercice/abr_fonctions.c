@@ -41,6 +41,23 @@ extern void abr_ancetres_afficher(const abr_t * arbre, noeud_t * noeud, void (*a
  * a partir d'une liste d'elements generiques
  */
 
+static
+err_t abr_dicho_creer_bis( noeud_t * noeud , 
+		       	   int rang,
+			   liste_t * liste,
+			   err_t (*fonction_affectation)( void * e1 , void * e2 ) )	
+{ 
+  if(rang == 0){
+	  return (OK);
+  }
+  int rang1 = rang / 2;
+  noeud = noeud_creer(liste_elem_lire(liste,rang1),NULL,NULL,fonction_affectation);
+  abr_dicho_creer_bis(noeud->droit,rang1/2 + rang1,liste,fonction_affectation);
+  abr_dicho_creer_bis(noeud->gauche,rang1,liste,fonction_affectation);
+  free(noeud);	
+  return(OK) ; 
+}
+
 
 
 extern
@@ -50,19 +67,9 @@ err_t abr_dicho_creer( abr_t ** arbre ,
 		       int (*fonction_comparaison) ( const void * e1 , const void * e2) ,
 		       liste_t * liste )
 { 
-  booleen_t fin = FAUX;
-  int nb = liste_nb_lire(liste);
-  int rang1 = nb / 2;
-  int rang2 = nb/ 2;
-  abr_inserer(arbre,liste_elem_lire(liste,rang1));
-  while (!fin){
-  	if(r
-	rang1 = rang1/2;
-  	abr_inserer(arbre,liste_elem_lire(liste,rang1));
-  	
-	rang2 = rang2 + rang2/2;
-	abr_inserer(arbre,liste_elem_lire(liste,rang2));
-	
-  return(OK) ; 
+  	(*arbre) = abr_creer(fonction_affectation,fonction_destruction,fonction_comparaison);
+	int nb = liste_nb_lire(liste);
+	printf("NB : %i",nb);
+	return(abr_dicho_creer_bis((*arbre)->racine,nb,liste,(*arbre)->affecter));
 }
 

@@ -156,7 +156,7 @@ void noeud_afficher( const noeud_t * noeud ,
 /*
  * Recherche noeud min/max
  */
-noeud_t * noeud__min_max(noeud_t * noeud){
+noeud_t * noeud_min_max(noeud_t * noeud){
 	if(noeud->droit == NULL){
 		return noeud;
 	}
@@ -165,7 +165,19 @@ noeud_t * noeud__min_max(noeud_t * noeud){
 	}
 	return NULL;
 }
-	
+
+
+extern int noeud_nb_fils(noeud_t * noeud){
+	int res = -1;
+	if(noeud != NULL){
+		res++;
+		if(noeud->gauche != NULL)
+			res++;
+		if(noeud->droit  != NULL)
+			res++;
+	}
+	return res;
+}
 /*
  * Sauvegarde dans un fichier 
  */
@@ -280,18 +292,16 @@ booleen_t noeud_supprimer( void * etiquette ,			 /* valeur a supprimer de l'arbr
                 (*racine)->droit  = NULL;
                 noeud_detruire(&tmp2, detruire);
                 *racine = tmp;
-                return true;
+                return VRAI;
          }
-         if(nbFils == 2){
-	         noeud_t * max = noeud__min_max((*racine)->gauche);
-                 void * tmp = (*racine)->etiquette;
-                 (*racine)->etiquette = max->etiquette;
-                 max->etiquette = tmp;
-                 
-		 
-		 return true;
-         }
-	return false;                                
+	if(nbFils == 2){
+		noeud_t * max = noeud_min_max((*racine)->gauche);
+		(*racine)->etiquette = max->etiquette;
+		max->etiquette       = etiquette;
+		noeud_supprimer(etiquette, &((*racine)->gauche), detruire, comparer);
+		return VRAI;
+	}
+	return FAUX;  
   }                                                                                
   if(cmp < 0)                                                                      
   {                                                                                

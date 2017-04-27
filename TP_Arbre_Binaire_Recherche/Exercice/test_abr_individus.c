@@ -45,7 +45,6 @@ main(int argc , char * argv[] )
 
   char prenom[128] ;
   char nom[128] ; 
-  individus[0] = NULL ;
   for( i=0 ; i<N ; i++ ) 
     {
       sprintf( nom , "nom_%03d" , (int)i ) ;
@@ -147,11 +146,12 @@ main(int argc , char * argv[] )
       return(noerr) ; 
     }
 
-  for( i=1 ; i<N ; i++ ) 
+  for( i=0 ; i<N ; i++ ) 
     {
       individu_detruire( &individus[i] ) ; 
     }
-
+  free(individus);
+  
   printf( "Fin du programme de test sur les objets de type arbre abr_t\n" ) ; 
 
   return(0) ; 

@@ -143,11 +143,12 @@ main(int argc , char * argv[] )
       return(noerr) ; 
     }
 
-  for( i=1 ; i<N ; i++ ) 
+  for( i=0 ; i<N ; i++ ) 
     {
       fraction_detruire( &fractions[i] ) ; 
     }
 
+  free(fractions);
   printf( "Fin du programme de test sur les objets de type arbre abr_t\n" ) ; 
 
   return(0) ; 

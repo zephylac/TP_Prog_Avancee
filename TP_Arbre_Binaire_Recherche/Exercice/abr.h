@@ -100,4 +100,7 @@ extern err_t abr_rechercher( noeud_t ** result ,
 				 const abr_t * arbre , 
 				 const void * etiquette ) ;
 
+extern void affHauteur (int hauteur, booleen_t leftMost, char * left, char * right, char * between, char * empty, booleen_t reset);
+extern void resetAffHauteur ();   
+
 #endif
