@@ -285,7 +285,7 @@ booleen_t noeud_supprimer( void * etiquette ,			 /* valeur a supprimer de l'arbr
                 return VRAI;
          }
 	if(nbFils == 2){
-		noeud_t * max = noeud_max((*racine)->gauche);
+		noeud_t * max = noeud_min_max((*racine)->gauche);
 		void * tmp           = (*racine)->etiquette;
 		(*racine)->etiquette = max->etiquette;
 		max->etiquette       = tmp;
