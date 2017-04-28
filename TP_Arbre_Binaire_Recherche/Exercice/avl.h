@@ -21,6 +21,9 @@ typedef abr_t avl_t ;
 /*
  * Fonctions 
  */
+
+extern int avl_equilibrer(avl_t * arbre);
+
 extern noeud_t * avl_racine_lire( const avl_t * arbre )  ; 
 extern err_t avl_racine_ecrire( avl_t * arbre , noeud_t * racine )  ;
 

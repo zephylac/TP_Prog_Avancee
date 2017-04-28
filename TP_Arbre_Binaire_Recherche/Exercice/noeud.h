@@ -20,6 +20,9 @@ typedef struct noeud_s
  * Fonctions d'accès aux attributs
  */
 
+/* -- Hauteur -- */
+int noeud_hauteur( noeud_t * noeud, int i );
+
 /* -- Etiquette */
 extern void * noeud_etiquette_lire( const noeud_t * noeud )  ; 
 extern err_t noeud_etiquette_ecrire( noeud_t * noeud , 

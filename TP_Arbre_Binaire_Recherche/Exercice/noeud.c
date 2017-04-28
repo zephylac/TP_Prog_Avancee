@@ -1,7 +1,21 @@
 #include <noeud.h>
 
 /* Etiquette */                                                                 
-                                                                                
+ 
+static
+int max(int a, int b)
+{
+  if( a > b) return a;
+  return b;
+}
+
+extern
+int noeud_hauteur( noeud_t * noeud, int i )
+{
+  if(noeud == NULL) return 0;
+  return( max(noeud_hauteur(noeud->gauche,i+1),noeud_hauteur(noeud->droit,i+1)));
+}
+
 extern                                                                          
 void * noeud_etiquette_lire( const noeud_t * noeud )                            
 {                                                                               

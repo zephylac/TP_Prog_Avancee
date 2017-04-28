@@ -1,5 +1,85 @@
 #include <avl.h>
 
+
+ static
+ err_t rotation_gauche(noeud_t ** noeud)
+{
+  if(*noeud != NULL){
+  	noeud_t * nouveau = (*noeud)->droit;
+	nouveau->gauche = *noeud;
+	(*noeud)->droit = nouveau->gauche;
+	*noeud = nouveau;
+
+  }
+  return OK;
+} 
+
+static
+err_t rotation_droite(noeud_t ** noeud)
+{
+  if(*noeud != NULL){
+  	noeud_t * nouveau = (*noeud)->gauche;
+	nouveau->droit = *noeud;
+	(*noeud)->gauche = nouveau->droit;
+	*noeud = nouveau;
+  }
+  return OK;
+}
+
+static
+err_t rotation_gauche_droite(noeud_t ** noeud)
+{
+  rotation_gauche(&((*noeud)->gauche));
+  rotation_droite(noeud);
+  return OK;
+}
+
+static
+err_t rotation_droite_gauche(noeud_t ** noeud)
+{
+  rotation_droite(&((*noeud)->droit));
+  rotation_gauche(noeud);
+  return OK;
+}
+
+static
+int avl_desequilibre(noeud_t * noeud)
+{
+  if(noeud == NULL) return 0;
+  return (noeud_hauteur(noeud->gauche,0) - noeud_hauteur(noeud->droit,0));
+}
+
+
+static
+void avl_equilibrer_bis(noeud_t ** noeud)
+{
+  if(*noeud != NULL && ((*noeud)->gauche != NULL || (*noeud)->droit != NULL))
+  {
+  	int res = avl_desequilibre(*noeud);
+	if(res == 2)
+	{
+		int gauche = avl_desequilibre((*noeud)->gauche);
+		if(gauche == 1 || gauche == 0) rotation_droite(noeud);
+		else if(gauche == -1) rotation_gauche_droite(noeud);
+	}
+	else if(res == -2)
+	{
+		int droite = avl_desequilibre((*noeud)->droit);
+		if(droite == 1) rotation_droite_gauche(noeud);
+		if(droite == -1 || droite == 0) rotation_gauche_droite(noeud);
+	}
+	avl_equilibrer(&((*noeud)->gauche);
+	avl_equilibrer(&((*noeud)->droit);
+  }
+}
+
+extern
+err_t avl_equilibrer(avl_t * arbre)
+{
+	avl_equilibrer_bis(&(arbre->racien));
+	return OK;
+}
+	
 extern
 noeud_t * avl_racine_lire( const avl_t * arbre ) 
 {
@@ -109,8 +189,8 @@ extern
 booleen_t avl_supprimer( avl_t * arbre ,
 			 void * etiquette ) 
 {
-return(abr_supprimer(arbre ,
-		     etiquette ) ) ; 
+  return(abr_supprimer(arbre , etiquette ) ) ; 
+  
 } 
 
 /*
