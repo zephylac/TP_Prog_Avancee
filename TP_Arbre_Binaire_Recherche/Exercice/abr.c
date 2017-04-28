@@ -72,13 +72,13 @@ abr_t * abr_creer( err_t (*fonction_affectation)( void * e1 , void * e2 ) ,	/*!<
 {
   abr_t * arbre = NULL ; 
                                                                                    
-  arbre = malloc(sizeof(ab_t));                                                    
+  arbre = malloc(sizeof(abr_t));                                                    
                                                                                    
   arbre->taille = 0;                                                               
   arbre->racine = NULL;                                                            
   arbre->affecter = fonction_affectation;                                          
-  arbre->detruire= fonction_destruction;
-  arbre->comparer=fonction_comparaison;   
+  arbre->detruire = fonction_destruction;
+  arbre->comparer = fonction_comparaison;   
   return(arbre) ; 
 }
 
@@ -86,28 +86,19 @@ abr_t * abr_creer( err_t (*fonction_affectation)( void * e1 , void * e2 ) ,	/*!<
 /*
  * Destruction 
  */
-
-static err_t abr_detruire_bis( noeud_t ** noeud, err_t (*detruire) (void *)){    
-        if((*noeud) == NULL){                                                     
-                return(OK);                                                     
-        }                                                                       
-        abr_detruire_bis(&((*noeud)->gauche),detruire);                          
-        abr_detruire_bis(&((*noeud)->droit),detruire);                           
-        noeud_detruire(noeud,detruire);                                         
-        return(OK);                                                             
-}                                                                               
-                                                                                
-extern                                                                          
-err_t abr_detruire( abr_t ** arbre )                                              
-{                                                                               
-  if(*arbre != NULL){                                                           
-          abr_detruire_bis(&((*arbre)->racine),(*arbre)->detruire);              
-          free(*arbre);                                                         
-          (*arbre) = NULL;                                                      
-  }                                                                             
-  return(OK) ;                                                                  
-}   
-
+extern err_t abr_detruire(abr_t ** arbre){
+	
+	if(*arbre != NULL){
+	
+		noeud_detruire(&(*arbre)->racine, (*arbre)->detruire);
+		(*arbre)->racine = NULL;
+		free(*arbre);
+		*arbre = NULL;
+		return OK;
+	}
+	return KO;
+}
+                                                                               
 /*
  * Affichage 
  */
@@ -185,7 +176,6 @@ static void ab_afficher_infixe (noeud_t * noeud, void (*afficher) (const void *)
     if (noeud == NULL) return;                                                  
                                                                                 
     ab_afficher_infixe (noeud->gauche, afficher, hauteur + 1, FAUX);            
-    //affHauteur2(hauteur, aUnGauche);                                          
     affHauteur(hauteur, aUnGauche,"└── ","┌── ","    ","|   ",FAUX);            
     afficher (noeud->etiquette);                                                
     printf ("\n");                                                              
@@ -207,32 +197,23 @@ void abr_afficher( const abr_t * arbre , void (*fonction_affichage)(const void *
 /*
  * Insertion d'une valeur dans un ABR
  */
-extern
-err_t abr_inserer( abr_t * arbre  ,
-		   void * etiquette ) 
-{
-  noeud_t * noeud = NULL; 
-  noeud = noeud_creer(etiquette, NULL, NULL,arbre->affecter);
-  if(arbre->racine == NULL){
-	arbre->racine = noeud; 
-  	return(OK) ;
-  }
-  return(noeud_inserer(noeud,&(arbre->racine),arbre->comparer));
-} 
+
+extern err_t abr_inserer(abr_t * arbre, void * etiquette){
+
+	if(arbre == NULL) return KO;
+	noeud_t * noeud = NULL;
+	noeud = noeud_creer(etiquette, NULL, NULL, arbre->affecter);
+	return noeud_inserer(noeud, &(arbre->racine), arbre->comparer, arbre->affecter);
+
+}
 
 /*
  * Suppression d'une valeur dans un ABR
  */
+extern booleen_t abr_supprimer(abr_t * arbre, void * etiquette){
+	return noeud_supprimer(etiquette, &(arbre->racine), arbre->affecter, arbre->detruire, arbre->comparer);
+} 
 
-extern
-err_t abr_supprimer( abr_t * arbre  ,
-		   void * etiquette ) 
-{
-  if(arbre->racine == NULL){
-  	return(OK) ;
-  }
-  return(noeud_supprimer(etiquette,&(arbre->racine),arbre->detruire,arbre->comparer));
-}
 
 /*
  * Chargement d'un arbre a partir d'un fichier 

@@ -119,16 +119,20 @@ noeud_t * noeud_creer( void * etiquette ,
 /*                                                                              
  * Destruction                                                                  
  */                                                                             
-                                                                                
 extern                                                                          
 err_t noeud_detruire( noeud_t ** noeud ,                                        
                       err_t (*detruire)( void * e) )                            
 {                                                                               
-  detruire(&((*noeud)->etiquette));                                   
-  free((*noeud));                                                     
-  (*noeud) = NULL;                                                    
-  return(OK) ;                                                                  
-}          
+  if(*noeud != NULL){
+  	noeud_detruire(&((*noeud)->gauche), detruire);
+	noeud_detruire(&((*noeud)->droit),  detruire);
+	detruire(&(*noeud)->etiquette);
+	free(*noeud);
+	*noeud = NULL;
+  }
+  return OK;  
+}	
+	
 
 /*                                                                              
  * Affichage                                                                    
@@ -199,7 +203,7 @@ booleen_t noeud_rechercher( noeud_t ** result ,			 /* Resultat: @ du noeud trouv
 			    int (*comparer)(const void * n1 , const void * n2) ) /* Fonction de comparaison des etiquettes */
 {
   if(racine == NULL) return(FAUX);                                                 
-  int cmp = comparer(etiquette, racine->etiquette);                                 
+  int cmp = comparer(&(etiquette), &(racine->etiquette));                                 
   if(cmp < 0) return(noeud_rechercher(result,racine->gauche, etiquette, comparer));   
   if(cmp > 0) return(noeud_rechercher(result,racine->droit, etiquette, comparer));       
   if(cmp == 0){                                                                    
@@ -213,96 +217,81 @@ booleen_t noeud_rechercher( noeud_t ** result ,			 /* Resultat: @ du noeud trouv
  * Insertion d'un noeud dans un ABR (aux feuilles)
  * Le noeud doit etre cree avec son etiquette
  */
-
-extern
-err_t noeud_inserer( noeud_t * noeud ,			          /* @ du noeud a inserer */  
-		     noeud_t ** racine  ,	                  /* Racine de l'arbre de recherche */
-		     int (*comparer)(const void * n1 , const void * n2))     /* Fonction de comparaison des etiquettes */
+extern err_t noeud_inserer(
+	noeud_t * noeud,                                   /* @ du noeud a inserer */  
+	noeud_t ** racine,                                 /* Racine de l'arbre de recherche */
+	int (*comparer)(const void * n1, const void * n2), /* Fonction de comparaison des etiquettes */
+	err_t (*affecter)(void * e1 , void * e2))          /* Fonction d'affectation des etiquettes */ 
 {
-  int cmp = comparer(noeud->etiquette, (*racine)->etiquette);                                     
-                                                                                   
-  if(cmp ==0) return(-1);                                                          
-  if(cmp < 0){                                                                     
-        if((*racine)->gauche == NULL){                                                
-                noeud_sag_ecrire((*racine),noeud);                                    
-                return(OK);                                                        
-        }                                                                          
-        else                                                                       
-        {                                                                          
-        return(noeud_inserer(noeud,&((*racine)->gauche),comparer));            
-        }                                                                          
-  }                                                                                
-  if( cmp > 0)                                                                     
-  {                                                                                
-        if((*racine)->droit == NULL){                                                 
-                noeud_sad_ecrire((*racine),noeud);                                    
-                return(OK);                                                        
-        }                                                                          
-        else                                                                       
-        {                                                                          
-        return(noeud_inserer(noeud,&((*racine)->droit),comparer));             
-        }                                                                          
-  }
-  return(OK)  ;
+	if(noeud != NULL){
+		if((*racine) != NULL){
+		
+			int cmp = comparer(&(noeud->etiquette), &((*racine)->etiquette));
+
+			if(cmp == 0)return ERR_ELEM_UNK;
+			else if(cmp < 0) return noeud_inserer(noeud, &((*racine)->gauche), comparer, affecter);
+			else return noeud_inserer(noeud, &((*racine)->droit), comparer, affecter);
+			
+		}
+		else {
+			(*racine) = noeud;
+			return OK;
+		}
+	}
+
+	printf("Erreur, noeud nul.\n");
+	return ERR_ELEM_UNK;
+
 }
-
-
 /*
  * Suppression d'un noeud dans un ABR
  * Renvoie VRAI si le noeud existait dans l'arbre 
  *         FAUX sinon 
  */
 
-extern
-booleen_t noeud_supprimer( void * etiquette ,			 /* valeur a supprimer de l'arbre */ 
-			   noeud_t ** racine  ,	                  /* Racine de l'arbre de recherche */
-			   err_t (*detruire)( void * e ) , /* Fonction de destruction des etiquettes */
-			   int (*comparer)(const void * n1 , const void * n2) ) 
+extern booleen_t noeud_supprimer(
+		void * etiquette,                                  /* Valeur a supprimer de l'arbre */ 
+		noeud_t ** racine,                                 /* Racine de l'arbre de recherche */
+		err_t (*affecter)(void * e1, void * e2),           /* Fonction d'affectation des etiquettes */
+		err_t (*detruire)(void * e),                       /* Fonction de destruction des etiquettes */
+		int (*comparer)(const void * n1, const void * n2)) /* Fonction de comparaison des etiquettes */
 {
-  if((*racine) == NULL)                                                               
-  {                                                                                
-        return(OK);                                                                
-  }                                                                                
-  int cmp = comparer(etiquette, (*racine)->etiquette);                                     
-  if(cmp ==0){
-	 int nbFils = noeud_nb_fils(*racine);
-         if(nbFils == 0)
-         	return noeud_detruire(racine, detruire);
 
-         if(nbFils == 1){
+	if(*racine != NULL){
+		int cmp = comparer(&etiquette, &((*racine)->etiquette));
+		if(cmp == 0){
+			
+			int nbFils = noeud_nb_fils(*racine);
+			if(nbFils == 0)	return noeud_detruire(racine, detruire);
 
-                noeud_t * tmp = (*racine)->gauche;
-                if(tmp == NULL)
-                	tmp = (*racine)->droit;
-                if(tmp == NULL)
-                        printf("Erreur, y'a une erreur.\n");
+			if(nbFils == 1){
+				
+				noeud_t * tmp = (*racine)->gauche;
+				if(tmp == NULL)	tmp = (*racine)->droit;
+				if(tmp == NULL)	printf("Erreur, y'a une erreur.\n");
 
-                noeud_t * tmp2 = *racine;
-                (*racine)->gauche = NULL;
-                (*racine)->droit  = NULL;
-                noeud_detruire(&tmp2, detruire);
-                *racine = tmp;
-                return VRAI;
-         }
-	if(nbFils == 2){
-		noeud_t * max = noeud_min_max((*racine)->gauche);
-		void * tmp           = (*racine)->etiquette;
-		(*racine)->etiquette = max->etiquette;
-		max->etiquette       = tmp;
-		noeud_supprimer(etiquette, &((*racine)->gauche), detruire, comparer);
-		return VRAI;
+				noeud_t * tmp2 = *racine;
+				(*racine)->gauche = NULL;
+				(*racine)->droit  = NULL;
+				noeud_detruire(&tmp2, detruire);
+				*racine = tmp;	
+				return VRAI;
+			}
+			if(nbFils == 2){
+
+				noeud_t * max = noeud_min_max((*racine)->gauche);
+				void * tmp           = (*racine)->etiquette;
+				(*racine)->etiquette = max->etiquette;
+				max->etiquette       = tmp;
+				noeud_supprimer(etiquette, &((*racine)->gauche), affecter, detruire, comparer);
+				return VRAI;
+			}
+			printf("Erreur, nombre de fils incorrect (%i)", nbFils);
+			return FAUX;
+		}
+		if(cmp < 0) return noeud_supprimer(etiquette, &((*racine)->gauche), affecter, detruire, comparer);
+		
+		return noeud_supprimer(etiquette, &((*racine)->droit), affecter, detruire, comparer);
 	}
-	return FAUX;  
-  }                                                                                
-  if(cmp < 0)                                                                      
-  {                                                                                
-        return(noeud_supprimer(etiquette,&((*racine)->gauche),detruire,comparer));         
-  }                                                                                
-    if( cmp > 0)                                                                   
-  {                                                                                
-        return(noeud_supprimer(etiquette,&((*racine)->droit),detruire,comparer));          
-  }                                                                                
-  return(FAUX) ;
+	return FAUX;
 }
-
-

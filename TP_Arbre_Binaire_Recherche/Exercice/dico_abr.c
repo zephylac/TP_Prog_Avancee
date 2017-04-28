@@ -104,7 +104,7 @@ main( int argc , char * argv[] )
       exit(-1);
     }
   
-  srandom(getpid()) ;
+  srand(getpid()) ;
 
   /* ---------- */
   
@@ -173,10 +173,10 @@ main( int argc , char * argv[] )
   noeud_t * result = NULL ; 
   for( i=0 ; i<nb_operations ; i++ ) 
     {
-      if( random()%2 )
+      if( rand()%2 )
 	{
 	  /* Recherche positive */
-	  i_operation = random()%nb ;
+	  i_operation = rand()%nb ;
 	  if( ! abr_rechercher( &result ,
 				arbre ,
 				liste_elem_lire(liste_w , i_operation ) ) ) 
@@ -234,7 +234,7 @@ main( int argc , char * argv[] )
   cpt_rech_neg = 0 ; 
   for( i=0 ; i<nb_operations ; i++ ) 
     {
-      i_operation = random()%(int)nb ;
+      i_operation = rand()%(int)nb ;
       if( abr_supprimer( arbre , liste_elem_lire(liste_w , i_operation ) ) )
 	cpt_rech_pos++ ;
       else
@@ -282,6 +282,8 @@ main( int argc , char * argv[] )
 
   /* ------------ */
 
+  string_detruire_cb(&mot_inconnu);
+  abr_detruire(&arbre);
  if( verbose ) printf( "\n--- Fin du programme %s ---\n" , nomprog ) ; 
 
   return(0) ; 

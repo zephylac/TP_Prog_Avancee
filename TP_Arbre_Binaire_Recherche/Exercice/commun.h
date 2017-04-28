@@ -19,7 +19,7 @@ typedef int err_t ;
 
 /* Erreurs */
 #define OK 0
-
+#define KO -301
 #define ERR_DEB_MEMOIRE -100 
 #define ERR_SCANF -101 
 #define ERR_NOM_FICHIER -102

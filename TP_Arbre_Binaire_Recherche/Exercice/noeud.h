@@ -101,14 +101,17 @@ booleen_t noeud_rechercher( noeud_t ** result ,			       /* Resultat: @ du noeud
 
 extern err_t noeud_inserer( noeud_t * noeud ,			           /* noeud a inserer */  
 			    noeud_t ** racine  ,	                   /* Racine de l'arbre de recherche (peut etre modifiee) */
-			    int (*comparer)(const void * n1 , const void * n2) ) ;       /* Fonction de comparaison des etiquettes */
+			    int (*comparer)(const void * n1 , const void * n2),       /* Fonction de comparaison des etiquettes */
+	                    err_t (*affecter)(void * e1 , void * e2));          /* Fonction d'affectation des etiquettes */ 
 
 /*
  * Suppression d'un noeud dans un ABR
  */
+extern booleen_t noeud_supprimer(
+		void * etiquette,                                  /* Valeur a supprimer de l'arbre */ 
+		noeud_t ** racine,                                 /* Racine de l'arbre de recherche */
+		err_t (*affecter)(void * e1, void * e2),           /* Fonction d'affectation des etiquettes */
+		err_t (*detruire)(void * e),                       /* Fonction de destruction des etiquettes */
+		int (*comparer)(const void * n1, const void * n2)); /* Fonction de comparaison des etiquettes */
 
-extern booleen_t noeud_supprimer( void * etiquette,		 /* valeur a supprimer dans l'arbre */
-				  noeud_t ** racine  ,	                   /* Racine de l'arbre de recherche (peut etre modifiee) */
-				  err_t (*detruire)( void * e ) ,   /* Fonction de destruction des etiquettes */
-				  int (*comparer)(const void * n1 , const void * n2) ) ;
 #endif

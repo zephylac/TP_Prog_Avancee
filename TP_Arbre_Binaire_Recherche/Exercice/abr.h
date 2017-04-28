@@ -62,10 +62,11 @@ extern err_t abr_inserer( abr_t * arbre  ,
 /*
  * Suppression d'une valeur dans un ABR
  */
-
+extern booleen_t abr_supprimer(abr_t * arbre, void * etiquette);
+/*
 extern err_t abr_supprimer( abr_t * arbre ,
 			    void * etiquette ) ;
-
+*/
 /*
  * Chargement d'un arbre a partir d'un fichier 
  */
