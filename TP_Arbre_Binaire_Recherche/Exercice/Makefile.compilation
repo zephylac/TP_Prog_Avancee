@@ -2,18 +2,18 @@
 # Option compilation 
 #
 
- CCOBJ=gcc -c -lm -std=c99
- CCLNK=gcc -lm -std=c99
+ CCOBJ=gcc -c -std=c99 
+ CCLNK=gcc -std=c99 
 
 # Valeurs possibles : yes , no  
 DEBUG=yes
 # Valeurs possibles : apple , linux 
-ARCH=apple
+ARCH=linux
 
 ifeq ($(DEBUG),yes)
-	 CFLAGS=-Wall -ansi -g -D_DEBUG_
+	 CFLAGS=-Wall -g -D_DEBUG_
 else
-	 CFLAGS=-Wall -ansi 
+	 CFLAGS=-Wall  
 endif
 
 

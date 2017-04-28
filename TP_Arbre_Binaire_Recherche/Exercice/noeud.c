@@ -289,7 +289,7 @@ booleen_t noeud_supprimer( void * etiquette ,			 /* valeur a supprimer de l'arbr
 		void * tmp           = (*racine)->etiquette;
 		(*racine)->etiquette = max->etiquette;
 		max->etiquette       = tmp;
-		noeud_supprimer(etiquette, &((*racine)->gauche), affecter, detruire, comparer);
+		noeud_supprimer(etiquette, &((*racine)->gauche), detruire, comparer);
 		return VRAI;
 	}
 	return FAUX;  

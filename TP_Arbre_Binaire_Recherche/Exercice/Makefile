@@ -34,101 +34,101 @@ BIN = test_commun test_individu test_fraction test_mystring \
 	dico_liste dico_abr dico_avl
 
 test_commun : $(fich_obj_test_commun) 
-	$(CCLNK) $(CFLAGS) $(LIBMATH) $(fich_obj_test_commun) -o test_commun 
+	$(CCLNK) $(CFLAGS) $(fich_obj_test_commun) -o test_commun $(LIBMATH)
 
 test_commun.o : test_commun.c commun.h
-	$(CCOBJ) $(CFLAGS) $(LIBMATH) test_commun.c -o test_commun.o -I./ 
+	$(CCOBJ) $(CFLAGS) test_commun.c -o test_commun.o -I./ $(LIBMATH)
 
 test_individu : $(fich_obj_test_individu) 
-	$(CCLNK) $(CFLAGS) $(LIBMATH) $(fich_obj_test_individu) -o test_individu 
+	$(CCLNK) $(CFLAGS) $(fich_obj_test_individu) -o test_individu $(LIBMATH)
 
 test_individu.o : test_individu.c individu.h
-	$(CCOBJ) $(CFLAGS) $(LIBMATH) test_individu.c -o test_individu.o -I./ 
+	$(CCOBJ) $(CFLAGS) test_individu.c -o test_individu.o -I./ $(LIBMATH)
 
 test_fraction : $(fich_obj_test_fraction) 
-	$(CCLNK) $(CFLAGS) $(LIBMATH) $(fich_obj_test_fraction) -o test_fraction 
+	$(CCLNK) $(CFLAGS) $(fich_obj_test_fraction) -o test_fraction $(LIBMATH)
 
 test_fraction.o : test_fraction.c fraction.h
-	$(CCOBJ) $(CFLAGS) $(LIBMATH) test_fraction.c -o test_fraction.o -I./ 
+	$(CCOBJ) $(CFLAGS) test_fraction.c -o test_fraction.o -I./ $(LIBMATH)
 
 test_mystring : $(fich_obj_test_mystring) 
-	$(CCLNK) $(CFLAGS) $(LIBMATH) $(fich_obj_test_mystring) -o test_mystring 
+	$(CCLNK) $(CFLAGS) $(fich_obj_test_mystring) -o test_mystring $(LIBMATH)
 
 test_mystring.o : test_mystring.c mystring.h
-	$(CCOBJ) $(CFLAGS) $(LIBMATH) test_mystring.c -o test_mystring.o -I./ 
+	$(CCOBJ) $(CFLAGS) test_mystring.c -o test_mystring.o -I./ $(LIBMATH)
 
 test_liste_individus : $(fich_obj_test_liste_individus) 
-	$(CCLNK) $(CFLAGS) $(LIBMATH) $(fich_obj_test_liste_individus) -o test_liste_individus 
+	$(CCLNK) $(CFLAGS) $(fich_obj_test_liste_individus) -o test_liste_individus $(LIBMATH)
 
 test_liste_individus.o : test_liste_individus.c liste.h individu.h
-	$(CCOBJ) $(CFLAGS) $(LIBMATH) test_liste_individus.c -o test_liste_individus.o -I./ 
+	$(CCOBJ) $(CFLAGS) test_liste_individus.c -o test_liste_individus.o -I./ $(LIBMATH)
 
 test_liste_fractions : $(fich_obj_test_liste_fractions) 
-	$(CCLNK) $(CFLAGS) $(LIBMATH) $(fich_obj_test_liste_fractions) -o test_liste_fractions 
+	$(CCLNK) $(CFLAGS) $(fich_obj_test_liste_fractions) -o test_liste_fractions $(LIBMATH)
 
 test_liste_fractions.o : test_liste_fractions.c liste.h fraction.h
-	$(CCOBJ) $(CFLAGS) $(LIBMATH) test_liste_fractions.c -o test_liste_fractions.o -I./ 
+	$(CCOBJ) $(CFLAGS) test_liste_fractions.c -o test_liste_fractions.o -I./ $(LIBMATH)
 
 test_liste_mystrings : $(fich_obj_test_liste_mystrings) 
-	$(CCLNK) $(CFLAGS) $(LIBMATH) $(fich_obj_test_liste_mystrings) -o test_liste_mystrings 
+	$(CCLNK) $(CFLAGS) $(fich_obj_test_liste_mystrings) -o test_liste_mystrings $(LIBMATH)
 
 test_liste_mystrings.o : test_liste_mystrings.c liste.h mystring.h
-	$(CCOBJ) $(CFLAGS) $(LIBMATH) test_liste_mystrings.c -o test_liste_mystrings.o -I./ 
+	$(CCOBJ) $(CFLAGS) test_liste_mystrings.c -o test_liste_mystrings.o -I./ $(LIBMATH)
 
 test_liste : $(fich_obj_test_liste) 
-	$(CCLNK) $(CFLAGS) $(LIBMATH) $(fich_obj_test_liste) -o test_liste 
+	$(CCLNK) $(CFLAGS) $(fich_obj_test_liste) -o test_liste $(LIBMATH)
 
 test_liste.o : test_liste.c liste.h individu.h fraction.h mystring.h
-	$(CCOBJ) $(CFLAGS) $(LIBMATH) test_liste.c -o test_liste.o -I./ 
+	$(CCOBJ) $(CFLAGS) test_liste.c -o test_liste.o -I./ $(LIBMATH)
 
 test_noeud : $(fich_obj_test_noeud) 
-	$(CCLNK) $(CFLAGS) $(LIBMATH) $(fich_obj_test_noeud) -o test_noeud 
+	$(CCLNK) $(CFLAGS)  $(fich_obj_test_noeud) -o test_noeud $(LIBMATH)
 
 test_noeud.o : test_noeud.c noeud.h individu.h
-	$(CCOBJ) $(CFLAGS) $(LIBMATH) test_noeud.c -o test_noeud.o -I./ 
+	$(CCOBJ) $(CFLAGS) test_noeud.c -o test_noeud.o -I./ $(LIBMATH)
 
 test_abr_individus : $(fich_obj_test_abr_individus) 
-	$(CCLNK) $(CFLAGS) $(LIBMATH) $(fich_obj_test_abr_individus) -o test_abr_individus 
+	$(CCLNK) $(CFLAGS)  $(fich_obj_test_abr_individus) -o test_abr_individus $(LIBMATH)
 
 test_abr_individus.o : test_abr_individus.c abr.h individu.h
-	$(CCOBJ) $(CFLAGS) $(LIBMATH) test_abr_individus.c -o test_abr_individus.o -I./ 
+	$(CCOBJ) $(CFLAGS) test_abr_individus.c -o test_abr_individus.o -I./ $(LIBMATH)
 
 test_abr_fractions : $(fich_obj_test_abr_fractions) 
-	$(CCLNK) $(CFLAGS) $(LIBMATH) $(fich_obj_test_abr_fractions) -o test_abr_fractions 
+	$(CCLNK) $(CFLAGS) $(fich_obj_test_abr_fractions) -o test_abr_fractions $(LIBMATH)
 
 test_abr_fractions.o : test_abr_fractions.c abr.h fraction.h
-	$(CCOBJ) $(CFLAGS) $(LIBMATH) test_abr_fractions.c -o test_abr_fractions.o -I./ 
+	$(CCOBJ) $(CFLAGS) test_abr_fractions.c -o test_abr_fractions.o -I./ $(LIBMATH)
 
 test_abr_mystrings : $(fich_obj_test_abr_mystrings) 
-	$(CCLNK) $(CFLAGS) $(LIBMATH) $(fich_obj_test_abr_mystrings) -o test_abr_mystrings 
+	$(CCLNK) $(CFLAGS) $(fich_obj_test_abr_mystrings) -o test_abr_mystrings $(LIBMATH)
 
 test_abr_mystrings.o : test_abr_mystrings.c abr.h mystring.h
-	$(CCOBJ) $(CFLAGS) $(LIBMATH) test_abr_mystrings.c -o test_abr_mystrings.o -I./ 
+	$(CCOBJ) $(CFLAGS) test_abr_mystrings.c -o test_abr_mystrings.o -I./ $(LIBMATH)
 
 test_abr_fonctions : $(fich_obj_test_abr_fonctions) 
-	$(CCLNK) $(CFLAGS) $(LIBMATH) $(fich_obj_test_abr_fonctions) -o test_abr_fonctions 
+	$(CCLNK) $(CFLAGS) $(fich_obj_test_abr_fonctions) -o test_abr_fonctions $(LIBMATH)
 
 test_abr_fonctions.o : test_abr_fonctions.c abr.h individu.h
-	$(CCOBJ) $(CFLAGS) $(LIBMATH) test_abr_fonctions.c -o test_abr_fonctions.o -I./ 
+	$(CCOBJ) $(CFLAGS) test_abr_fonctions.c -o test_abr_fonctions.o -I./ $(LIBMATH)
 
 
 dico_liste : $(fich_obj_dico_liste) 
-	$(CCLNK) $(CFLAGS) $(LIBMATH) $(fich_obj_dico_liste) -o dico_liste 
+	$(CCLNK) $(CFLAGS) $(fich_obj_dico_liste) -o dico_liste $(LIBMATH)
 
 dico_liste.o : dico_liste.c liste.h mystring.h
-	$(CCOBJ) $(CFLAGS) $(LIBMATH) dico_liste.c -o dico_liste.o -I./ 
+	$(CCOBJ) $(CFLAGS) dico_liste.c -o dico_liste.o -I./ $(LIBMATH)
 
 dico_abr : $(fich_obj_dico_abr) 
-	$(CCLNK) $(CFLAGS) $(LIBMATH) $(fich_obj_dico_abr) -o dico_abr 
+	$(CCLNK) $(CFLAGS) $(fich_obj_dico_abr) -o dico_abr $(LIBMATH)
 
 dico_abr.o : dico_abr.c liste.h mystring.h
-	$(CCOBJ) $(CFLAGS) $(LIBMATH) dico_abr.c -o dico_abr.o -I./ 
+	$(CCOBJ) $(CFLAGS) dico_abr.c -o dico_abr.o -I./ $(LIBMATH)
 
 dico_avl : $(fich_obj_dico_avl) 
-	$(CCLNK) $(CFLAGS) $(LIBMATH) $(fich_obj_dico_avl) -o dico_avl 
+	$(CCLNK) $(CFLAGS)  $(fich_obj_dico_avl) -o dico_avl $(LIBMATH)
 
 dico_avl.o : dico_avl.c liste.h mystring.h
-	$(CCOBJ) $(CFLAGS) $(LIBMATH) dico_avl.c -o dico_avl.o -I./ 
+	$(CCOBJ) $(CFLAGS) dico_avl.c -o dico_avl.o -I./ $(LIBMATH)
 
 
 #
