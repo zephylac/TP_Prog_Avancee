@@ -30,8 +30,8 @@ ifeq ($(ARCH),linux)
 	LIBMATH=-lm
 
 	ifeq ($(DEBUG),yes)
-	      CFLAGS=-Wall -ansi -g -D_DEBUG_ -D_LINUX_
-	else
-	      CFLAGS=-Wall -ansi -D_LINUX_
+	      CFLAGS=-Wall -g -D_DEBUG_ -D_LINUX_
+      else
+	      CFLAGS=-Wall -D_LINUX_
 	endif
 endif
